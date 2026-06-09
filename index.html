@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stackly - Online Banking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #1a1a2e; overflow-x: hidden; }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-80px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeInRight { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        @keyframes floatSlow { 0%, 100% { transform: translateY(0px) rotate(-15deg); } 50% { transform: translateY(-15px) rotate(-12deg); } }
+        @keyframes floatSlow2 { 0%, 100% { transform: translateY(0px) rotate(5deg); } 50% { transform: translateY(-12px) rotate(8deg); } }
+        @keyframes floatSlow3 { 0%, 100% { transform: translateY(0px) rotate(-5deg); } 50% { transform: translateY(-18px) rotate(-8deg); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        @keyframes rotateIn { from { opacity: 0; transform: rotate(-180deg) scale(0.5); } to { opacity: 1; transform: rotate(0deg) scale(1); } }
+        @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 20px rgba(230,57,70,0.3); } 50% { box-shadow: 0 0 40px rgba(230,57,70,0.6); } }
+        @keyframes morphBlob { 0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; } 50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; } }
+        @keyframes swing { 0% { transform: rotate(0deg); } 20% { transform: rotate(15deg); } 40% { transform: rotate(-10deg); } 60% { transform: rotate(5deg); } 80% { transform: rotate(-5deg); } 100% { transform: rotate(0deg); } }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } 70% { transform: scale(1); } }
+        @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes slideInBottom { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes drawLine { from { width: 0; } to { width: 100%; } }
+        @keyframes flipIn { from { transform: perspective(400px) rotateY(90deg); opacity: 0; } to { transform: perspective(400px) rotateY(0deg); opacity: 1; } }
+        @keyframes elastic { 0% { transform: scale(0); } 50% { transform: scale(1.1); } 70% { transform: scale(0.95); } 100% { transform: scale(1); } }
+
+        .animate-on-scroll { opacity: 0; }
+        .animate-on-scroll.animated { opacity: 1; }
+        .animate-fade-up.animated { animation: fadeInUp 0.8s ease-out forwards; }
+        .animate-fade-left.animated { animation: fadeInLeft 0.8s ease-out forwards; }
+        .animate-fade-right.animated { animation: fadeInRight 0.8s ease-out forwards; }
+        .animate-scale.animated { animation: scaleIn 0.6s ease-out forwards; }
+        .animate-bounce.animated { animation: bounceIn 0.8s ease-out forwards; }
+        .animate-flip.animated { animation: flipIn 0.8s ease-out forwards; }
+        .animate-elastic.animated { animation: elastic 0.8s ease-out forwards; }
+        .animate-slide-up.animated { animation: slideInBottom 0.8s ease-out forwards; }
+
+        .delay-1 { animation-delay: 0.1s !important; }
+        .delay-2 { animation-delay: 0.2s !important; }
+        .delay-3 { animation-delay: 0.3s !important; }
+        .delay-4 { animation-delay: 0.4s !important; }
+        .delay-5 { animation-delay: 0.5s !important; }
+        .delay-6 { animation-delay: 0.6s !important; }
+        .delay-7 { animation-delay: 0.7s !important; }
+        .delay-8 { animation-delay: 0.8s !important; }
+
+        /* Header */
+        .header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 0 5%; display: flex; align-items: center; justify-content: space-between; height: 80px; animation: slideDown 0.6s ease-out; }
+        .logo { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 24px; color: #1a1a2e; text-decoration: none; transition: all 0.3s; }
+        .logo:hover { transform: scale(1.05); }
+        .logo-icon { width: 40px; height: 40px; position: relative; transition: transform 0.5s; }
+        .logo:hover .logo-icon { animation: swing 0.8s ease; }
+        .logo-icon img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+        .nav-links li { animation: fadeIn 0.5s ease-out backwards; }
+        .nav-links li:nth-child(1) { animation-delay: 0.1s; }
+        .nav-links li:nth-child(2) { animation-delay: 0.2s; }
+        .nav-links li:nth-child(3) { animation-delay: 0.3s; }
+        .nav-links li:nth-child(4) { animation-delay: 0.4s; }
+        .nav-links li:nth-child(5) { animation-delay: 0.5s; }
+        .nav-links li:nth-child(6) { animation-delay: 0.6s; }
+        .nav-links li:nth-child(7) { animation-delay: 0.7s; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; font-size: 15px; transition: all 0.3s; display: flex; align-items: center; gap: 4px; position: relative; padding: 5px 0; }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #e63946; transition: width 0.3s ease; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: #e63946; transform: translateY(-2px); }
+        .nav-links a.active { color: #e63946; }
+        .nav-links a.active::after { width: 100%; }
+        .nav-links a .plus { font-size: 12px; color: #999; transition: transform 0.3s; }
+        .nav-links a:hover .plus { transform: rotate(90deg); color: #e63946; }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .search-btn { background: none; border: none; font-size: 16px; cursor: pointer; color: #333; display: flex; align-items: center; gap: 8px; font-weight: 500; transition: all 0.3s; padding: 8px 12px; border-radius: 8px; }
+        .search-btn:hover { background: #f0f0f0; color: #e63946; transform: scale(1.05); }
+        .open-account { background: linear-gradient(135deg, #1a1a4e, #2d2d5a); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.3s; position: relative; overflow: hidden; border: none; cursor: pointer; display: inline-block; }
+        .open-account::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s; }
+        .open-account:hover::before { left: 100%; }
+        .open-account:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(26,26,78,0.3); animation: glow 2s infinite; }
+        .atm-link { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #333; font-weight: 500; font-size: 14px; transition: all 0.3s; }
+        .atm-link i { color: #e63946; transition: transform 0.3s; }
+        .atm-link:hover { color: #e63946; }
+        .atm-link:hover i { animation: bounceIn 0.5s; }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 24px; cursor: pointer; transition: transform 0.3s; }
+        .mobile-menu-btn:hover { transform: rotate(90deg); }
+
+        /* Hero Section */
+        .hero { min-height: 100vh; padding: 140px 5% 80px; background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 50%, #fff0f3 100%); display: flex; align-items: center; position: relative; overflow: hidden; animation: fadeIn 1s ease-out; }
+        .hero::before { content: ''; position: absolute; top: -10%; right: -5%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(230,57,70,0.08) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 8s ease-in-out infinite; }
+        .hero::after { content: ''; position: absolute; bottom: -20%; left: -10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(26,26,78,0.05) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 10s ease-in-out infinite reverse; }
+        .hero-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%; position: relative; z-index: 2; }
+        .hero-left { position: relative; z-index: 2; }
+        .hero-label { color: #e63946; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; animation: fadeInLeft 0.6s ease-out; }
+        .hero-label::before { content: '\f0d6'; font-family: 'Font Awesome 6 Free'; font-weight: 900; animation: float 3s ease-in-out infinite; }
+        .hero-title { font-size: 56px; font-weight: 800; line-height: 1.15; color: #1a1a2e; margin-bottom: 24px; animation: fadeInUp 0.8s ease-out 0.2s both; }
+        .hero-title .highlight { position: relative; display: inline-block; }
+        .hero-title .highlight::after { content: ''; position: absolute; bottom: 5px; left: 0; right: 0; height: 12px; background: linear-gradient(90deg, rgba(230,57,70,0.2), rgba(230,57,70,0.1)); z-index: -1; border-radius: 4px; animation: drawLine 1s ease-out 0.8s both; transform-origin: left; }
+        .hero-desc { font-size: 18px; color: #555; line-height: 1.7; margin-bottom: 40px; max-width: 500px; animation: fadeInUp 0.8s ease-out 0.4s both; }
+        .hero-buttons { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; animation: fadeInUp 0.8s ease-out 0.6s both; }
+        .btn-primary { background: linear-gradient(135deg, #e63946, #ff6b6b); color: white; padding: 16px 32px; border-radius: 50px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 10px; transition: all 0.3s; border: none; cursor: pointer; font-size: 16px; position: relative; overflow: hidden; animation: pulse 2s ease-in-out infinite; }
+        .btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s; }
+        .btn-primary:hover::before { left: 100%; }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 40px rgba(230,57,70,0.4); animation: none; }
+        .btn-primary i { transition: transform 0.3s; }
+        .btn-primary:hover i { transform: translateX(5px); }
+        .rating-box { display: flex; align-items: center; gap: 16px; background: white; padding: 12px 24px; border-radius: 50px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: all 0.3s; animation: fadeInUp 0.8s ease-out 0.8s both; }
+        .rating-box:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+        .rating-score { font-size: 28px; font-weight: 800; color: #1a1a2e; }
+        .rating-stars { color: #ffc107; font-size: 14px; }
+        .rating-stars i { display: inline-block; animation: fadeIn 0.3s ease-out backwards; }
+        .rating-stars i:nth-child(1) { animation-delay: 1s; }
+        .rating-stars i:nth-child(2) { animation-delay: 1.1s; }
+        .rating-stars i:nth-child(3) { animation-delay: 1.2s; }
+        .rating-stars i:nth-child(4) { animation-delay: 1.3s; }
+        .rating-stars i:nth-child(5) { animation-delay: 1.4s; }
+        .rating-text { font-size: 13px; color: #777; font-weight: 500; }
+
+        .hero-right { position: relative; z-index: 2; }
+        .hero-cards { position: relative; height: 500px; animation: fadeInRight 1s ease-out 0.3s both; }
+        .credit-card { position: absolute; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; }
+        .credit-card:hover { transform: translateY(-15px) rotate(0deg) scale(1.05) !important; box-shadow: 0 30px 80px rgba(0,0,0,0.25); z-index: 10; }
+        .card-1 { width: 320px; height: 200px; background: linear-gradient(135deg, #1a1a4e 0%, #e63946 100%); top: 50px; right: 80px; transform: rotate(-15deg); z-index: 3; animation: floatSlow 6s ease-in-out infinite; }
+        .card-2 { width: 300px; height: 190px; background: linear-gradient(135deg, #2d2d5a 0%, #4a4a8a 100%); top: 120px; right: 20px; transform: rotate(5deg); z-index: 2; animation: floatSlow2 5s ease-in-out infinite 1s; }
+        .card-3 { width: 280px; height: 180px; background: linear-gradient(135deg, #e63946 0%, #ff6b6b 100%); top: 200px; right: 100px; transform: rotate(-5deg); z-index: 1; animation: floatSlow3 7s ease-in-out infinite 0.5s; }
+        .card-content { padding: 24px; color: white; height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
+        .card-chip { width: 40px; height: 30px; background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%); border-radius: 6px; position: relative; animation: shimmer 3s infinite; background-size: 200% 100%; }
+        .card-chip::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(0,0,0,0.2); }
+        .card-chip::after { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: rgba(0,0,0,0.2); }
+        .card-number { font-size: 18px; letter-spacing: 3px; font-weight: 600; margin-top: 20px; }
+        .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+        .card-holder { font-size: 12px; text-transform: uppercase; opacity: 0.8; }
+        .card-logo { font-size: 24px; font-weight: 800; font-style: italic; }
+
+        .request-form { position: absolute; bottom: 0; right: 0; background: linear-gradient(135deg, #1a1a4e 0%, #2d2d5a 100%); padding: 32px; border-radius: 20px; width: 380px; color: white; box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: fadeInUp 1s ease-out 0.6s both; transition: all 0.3s; }
+        .request-form:hover { transform: translateY(-5px); box-shadow: 0 30px 80px rgba(0,0,0,0.3); }
+        .form-title { font-size: 18px; font-weight: 600; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+        .form-title i { animation: rotateIn 0.5s ease-out; }
+        .form-group { margin-bottom: 16px; position: relative; }
+        .form-label { font-size: 13px; margin-bottom: 8px; display: block; opacity: 0.9; transition: all 0.3s; }
+        .form-group:focus-within .form-label { color: #ff6b6b; transform: translateX(5px); }
+        .form-input { width: 100%; padding: 14px 16px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; background: rgba(255,255,255,0.1); color: white; font-size: 14px; outline: none; transition: all 0.3s; }
+        .form-input::placeholder { color: rgba(255,255,255,0.5); transition: all 0.3s; }
+        .form-input:focus { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
+        .form-input:focus::placeholder { transform: translateX(10px); opacity: 0; }
+        .form-note { font-size: 12px; opacity: 0.7; margin-top: 16px; text-align: center; animation: fadeIn 1s ease-out 1.5s both; }
+
+        /* Services Section */
+        .services { padding: 100px 5%; background: white; position: relative; overflow: hidden; }
+        .services::before { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(230,57,70,0.03) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 15s ease-in-out infinite; }
+        .section-header { text-align: center; margin-bottom: 60px; position: relative; z-index: 2; }
+        .section-title { font-size: 42px; font-weight: 800; color: #1a1a2e; margin-bottom: 16px; position: relative; display: inline-block; }
+        .section-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background: linear-gradient(90deg, #e63946, #1a1a4e); border-radius: 2px; animation: drawLine 1s ease-out 0.5s both; }
+        .services-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; position: relative; z-index: 2; }
+        .service-card { background: white; border: 1px solid #eee; border-radius: 20px; padding: 40px 30px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+        .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #e63946, #1a1a4e); transform: scaleX(0); transition: transform 0.4s; }
+        .service-card:hover { transform: translateY(-15px) scale(1.02); box-shadow: 0 25px 50px rgba(0,0,0,0.12); border-color: transparent; }
+        .service-card:hover::before { transform: scaleX(1); }
+        .service-card:hover .service-icon { transform: rotateY(360deg) scale(1.1); }
+        .service-card:hover .service-link i { animation: bounceIn 0.5s; }
+        .service-icon { width: 70px; height: 70px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 28px; position: relative; transition: all 0.6s; }
+        .service-icon.credit { background: #fff0f3; color: #e63946; }
+        .service-icon.banking { background: #f0f4ff; color: #1a1a4e; }
+        .service-icon.mortgage { background: #fff8e1; color: #ff8f00; }
+        .service-icon.loan { background: #e8f5e9; color: #2e7d32; }
+        .service-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; color: #1a1a2e; transition: color 0.3s; }
+        .service-card:hover h3 { color: #e63946; }
+        .service-card p { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 24px; }
+        .service-link { color: #1a1a2e; text-decoration: none; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.3s; }
+        .service-link:hover { gap: 15px; color: #e63946; }
+        .service-link i { transition: transform 0.3s; }
+
+        /* About Section */
+        .about { padding: 100px 5%; background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%); position: relative; overflow: hidden; }
+        .about::before { content: ''; position: absolute; top: 50%; left: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(26,26,78,0.03) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 12s ease-in-out infinite; }
+        .about-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 2; }
+        .about-left { position: relative; }
+        .about-img-wrapper { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.1); transition: all 0.4s; }
+        .about-img-wrapper:hover { transform: scale(1.02); box-shadow: 0 40px 80px rgba(0,0,0,0.15); }
+        .about-img { width: 100%; height: 500px; object-fit: cover; display: block; transition: transform 0.6s; }
+        .about-img-wrapper:hover .about-img { transform: scale(1.1); }
+        .about-img-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(26,26,78,0.1) 0%, transparent 100%); transition: all 0.3s; }
+        .about-img-wrapper:hover .about-img-overlay { background: linear-gradient(135deg, rgba(26,26,78,0.2) 0%, transparent 100%); }
+        .about-right { background: linear-gradient(135deg, #1a1a4e 0%, #2d2d5a 100%); padding: 60px; border-radius: 20px; color: white; transition: all 0.4s; position: relative; overflow: hidden; }
+        .about-right::before { content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%); animation: spinSlow 20s linear infinite; }
+        .about-right:hover { transform: translateY(-5px); box-shadow: 0 30px 60px rgba(26,26,78,0.3); }
+        .about-right h2 { font-size: 36px; font-weight: 800; margin-bottom: 24px; position: relative; z-index: 2; }
+        .about-right p { font-size: 16px; line-height: 1.8; opacity: 0.9; margin-bottom: 40px; position: relative; z-index: 2; }
+        .about-ceo { display: flex; align-items: center; gap: 20px; position: relative; z-index: 2; }
+        .ceo-avatar { width: 60px; height: 60px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.3); object-fit: cover; transition: all 0.4s; }
+        .ceo-avatar:hover { transform: scale(1.1); border-color: #e63946; }
+        .ceo-info h4 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .ceo-info p { font-size: 14px; opacity: 0.7; margin: 0; }
+        .ceo-contact { margin-left: auto; text-align: right; }
+        .ceo-contact p { font-size: 14px; opacity: 0.7; margin-bottom: 4px; }
+        .ceo-contact a { color: #e63946; text-decoration: none; font-weight: 700; font-size: 18px; transition: all 0.3s; display: inline-block; }
+        .ceo-contact a:hover { transform: scale(1.1); animation: heartbeat 1.5s infinite; }
+
+        /* Banking Steps Section */
+        .banking-steps { padding: 100px 5%; background: white; position: relative; overflow: hidden; }
+        .banking-steps::after { content: ''; position: absolute; bottom: -30%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(230,57,70,0.03) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 14s ease-in-out infinite reverse; }
+        .steps-container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; }
+        .steps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .steps-left h2 { font-size: 42px; font-weight: 800; color: #1a1a2e; margin-bottom: 20px; line-height: 1.2; }
+        .steps-left p { font-size: 16px; color: #666; line-height: 1.7; margin-bottom: 40px; }
+        .steps-left-bottom { margin-top: 60px; }
+        .steps-left-bottom h3 { font-size: 32px; font-weight: 800; margin-bottom: 20px; transition: color 0.3s; }
+        .steps-left-bottom:hover h3 { color: #e63946; }
+        .steps-left-bottom p { font-size: 15px; color: #666; }
+        .steps-images { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 30px; }
+        .steps-images:hover .step-img { filter: grayscale(0.5); }
+        .steps-images .step-img:hover { filter: grayscale(0); }
+        .step-img { border-radius: 16px; overflow: hidden; height: 150px; position: relative; transition: all 0.4s; }
+        .step-img:hover { transform: translateY(-10px) scale(1.05); z-index: 2; filter: grayscale(0) !important; }
+        .step-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+        .step-img:hover img { transform: scale(1.2); }
+        .step-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.4), transparent); transition: all 0.3s; }
+        .step-img:hover .step-img-overlay { background: linear-gradient(to top, rgba(230,57,70,0.3), transparent); }
+
+        .steps-right { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .step-item { background: #f8f9fa; padding: 24px; border-radius: 16px; display: flex; align-items: flex-start; gap: 16px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+        .step-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, #e63946, #1a1a4e); transform: scaleY(0); transition: transform 0.4s; border-radius: 0 4px 4px 0; }
+        .step-item:hover { background: white; box-shadow: 0 15px 40px rgba(0,0,0,0.1); transform: translateY(-8px) scale(1.02); }
+        .step-item:hover::before { transform: scaleY(1); }
+        .step-item:hover .step-check { animation: rotateIn 0.5s; }
+        .step-check { width: 32px; height: 32px; background: #e63946; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; flex-shrink: 0; transition: all 0.3s; }
+        .step-item:hover .step-check { background: #1a1a4e; transform: scale(1.1); }
+        .step-text h4 { font-size: 15px; font-weight: 600; color: #1a1a2e; transition: color 0.3s; }
+        .step-item:hover .step-text h4 { color: #e63946; }
+
+        /* Credit Card Process Section */
+        .process { padding: 100px 5%; background: linear-gradient(135deg, #f0f4ff 0%, #fff 50%, #fff0f3 100%); position: relative; overflow: hidden; }
+        .process::before { content: ''; position: absolute; top: 50%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(230,57,70,0.06) 0%, transparent 70%); border-radius: 50%; transform: translateY(-50%); animation: morphBlob 10s ease-in-out infinite; }
+        .process-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; position: relative; z-index: 2; }
+        .process-left h2 { font-size: 42px; font-weight: 800; color: #1a1a2e; margin-bottom: 20px; line-height: 1.2; }
+        .process-left > p { font-size: 16px; color: #666; line-height: 1.7; margin-bottom: 50px; }
+        .process-steps { display: flex; flex-direction: column; gap: 40px; }
+        .process-step { display: flex; gap: 24px; position: relative; transition: all 0.3s; padding: 20px; border-radius: 16px; }
+        .process-step:hover { background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transform: translateX(10px); }
+        .process-step:not(:last-child)::after { content: ''; position: absolute; left: 28px; top: 60px; width: 2px; height: calc(100% - 20px); background: linear-gradient(to bottom, #e63946, transparent); }
+        .step-num { font-size: 48px; font-weight: 800; color: #e63946; line-height: 1; width: 60px; flex-shrink: 0; transition: all 0.3s; }
+        .process-step:hover .step-num { transform: scale(1.2); color: #1a1a4e; }
+        .step-content h3 { font-size: 20px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; transition: color 0.3s; }
+        .process-step:hover .step-content h3 { color: #e63946; }
+        .step-content p { font-size: 15px; color: #666; line-height: 1.6; }
+
+        .process-right { position: relative; height: 500px; }
+        .process-card-float { position: absolute; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .process-card-float:hover { transform: translateY(-15px) rotate(0deg) scale(1.08) !important; box-shadow: 0 30px 70px rgba(0,0,0,0.25); z-index: 10; }
+        .pcard-1 { width: 280px; height: 180px; background: linear-gradient(135deg, #1a1a4e, #4a4a8a); top: 50px; left: 50px; transform: rotate(-10deg); z-index: 2; animation: floatSlow 5s ease-in-out infinite; }
+        .pcard-2 { width: 260px; height: 170px; background: linear-gradient(135deg, #e63946, #ff6b6b); top: 150px; left: 150px; transform: rotate(5deg); z-index: 1; animation: floatSlow2 6s ease-in-out infinite 1s; }
+        .process-badge { position: absolute; top: 80px; right: 20px; background: white; padding: 20px 24px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; transition: all 0.4s; }
+        .process-badge:hover { transform: translateY(-10px) scale(1.1); box-shadow: 0 20px 50px rgba(0,0,0,0.15); }
+        .process-badge i { font-size: 32px; color: #e63946; margin-bottom: 8px; display: inline-block; transition: transform 0.3s; }
+        .process-badge:hover i { animation: rotateIn 0.5s; }
+        .process-badge h4 { font-size: 16px; font-weight: 700; color: #1a1a2e; }
+
+        /* Features Section */
+        .features { padding: 100px 5%; background: white; position: relative; overflow: hidden; }
+        .features::before { content: ''; position: absolute; top: -20%; left: -10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(107,140,255,0.05) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 16s ease-in-out infinite; }
+        .features-container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; }
+        .features-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-bottom: 40px; align-items: start; }
+        .features-header h2 { font-size: 42px; font-weight: 800; color: #1a1a2e; line-height: 1.2; margin-bottom: 20px; }
+        .features-header p { font-size: 16px; color: #666; line-height: 1.7; }
+        .feature-box { padding: 40px; border-radius: 20px; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .feature-box:hover { transform: translateY(-10px) scale(1.02); }
+        .feature-box.brown { background: linear-gradient(135deg, #d4a574 0%, #c9956b 100%); color: white; }
+        .feature-box.blue { background: linear-gradient(135deg, #6b8cff 0%, #5470e6 100%); color: white; }
+        .feature-box .icon-circle { width: 60px; height: 60px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 20px; color: #1a1a2e; transition: all 0.4s; }
+        .feature-box:hover .icon-circle { transform: rotateY(360deg) scale(1.1); }
+        .feature-box h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+        .feature-box p { font-size: 14px; line-height: 1.7; opacity: 0.9; }
+
+        .features-bottom { background: linear-gradient(135deg, #a8e6cf 0%, #88d8c0 100%); border-radius: 20px; padding: 50px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 30px; transition: all 0.4s; position: relative; overflow: hidden; }
+        .features-bottom::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); animation: spinSlow 25s linear infinite; }
+        .features-bottom:hover { transform: scale(1.01); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .features-bottom h2 { font-size: 36px; font-weight: 800; color: #1a1a2e; position: relative; z-index: 2; }
+        .award-items { display: flex; gap: 60px; position: relative; z-index: 2; }
+        .award-item { text-align: center; transition: all 0.4s; }
+        .award-item:hover { transform: translateY(-10px); }
+        .award-item i { font-size: 40px; color: #e63946; margin-bottom: 12px; display: inline-block; transition: all 0.4s; }
+        .award-item:hover i { animation: rotateIn 0.6s; transform: scale(1.2); }
+        .award-item h4 { font-size: 16px; font-weight: 700; color: #1a1a2e; }
+
+        /* Testimonials Section */
+        .testimonials { padding: 100px 5%; background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%); position: relative; overflow: hidden; }
+        .testimonials::after { content: ''; position: absolute; bottom: -30%; left: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(230,57,70,0.03) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 18s ease-in-out infinite; }
+        .testimonials-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr; gap: 60px; align-items: start; position: relative; z-index: 2; }
+        .testimonials-left h2 { font-size: 42px; font-weight: 800; color: #1a1a2e; margin-bottom: 40px; line-height: 1.2; }
+        .testimonials-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .testimonial-card { background: white; padding: 40px; border-radius: 20px; border: 1px solid #eee; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+        .testimonial-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #e63946, #1a1a4e); transform: scaleX(0); transition: transform 0.4s; }
+        .testimonial-card:hover { box-shadow: 0 25px 50px rgba(0,0,0,0.1); transform: translateY(-10px) scale(1.02); border-color: transparent; }
+        .testimonial-card:hover::before { transform: scaleX(1); }
+        .testimonial-card:hover .testimonial-avatar { transform: scale(1.1); border-color: #e63946; }
+        .testimonial-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+        .testimonial-avatar { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid #f0f4ff; transition: all 0.4s; }
+        .testimonial-info h4 { font-size: 18px; font-weight: 700; color: #1a1a2e; }
+        .testimonial-info p { font-size: 14px; color: #888; }
+        .testimonial-text { font-size: 15px; color: #555; line-height: 1.8; margin-bottom: 20px; font-style: italic; }
+        .testimonial-stars { color: #ffc107; font-size: 14px; }
+        .testimonial-stars i { display: inline-block; transition: transform 0.3s; }
+        .testimonial-card:hover .testimonial-stars i { animation: bounceIn 0.5s; }
+
+        .stats-column { display: flex; flex-direction: column; gap: 20px; }
+        .stat-box { padding: 30px; border-radius: 16px; text-align: center; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+        .stat-box::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s; }
+        .stat-box:hover::before { left: 100%; }
+        .stat-box:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .stat-box.purple { background: linear-gradient(135deg, #e0c3fc 0%, #c9a8f0 100%); }
+        .stat-box.orange { background: linear-gradient(135deg, #ffd6a5 0%, #ffbf80 100%); }
+        .stat-box.green { background: linear-gradient(135deg, #a8e6cf 0%, #88d8c0 100%); }
+        .stat-icon { font-size: 32px; margin-bottom: 12px; display: inline-block; transition: transform 0.4s; }
+        .stat-box:hover .stat-icon { transform: scale(1.3) rotate(10deg); }
+        .stat-num { font-size: 36px; font-weight: 800; color: #1a1a2e; margin-bottom: 4px; transition: all 0.3s; }
+        .stat-box:hover .stat-num { transform: scale(1.1); color: #e63946; }
+        .stat-label { font-size: 14px; color: #555; font-weight: 500; }
+
+        /* News Section */
+        .news { padding: 100px 5%; background: white; position: relative; overflow: hidden; }
+        .news::before { content: ''; position: absolute; top: -20%; right: -15%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(26,26,78,0.03) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 20s ease-in-out infinite; }
+        .news-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 2fr; gap: 40px; position: relative; z-index: 2; }
+        .news-left { background: linear-gradient(135deg, #1a1a4e 0%, #2d2d5a 100%); padding: 60px; border-radius: 20px; color: white; display: flex; flex-direction: column; justify-content: center; transition: all 0.4s; position: relative; overflow: hidden; }
+        .news-left::before { content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%); animation: spinSlow 20s linear infinite; }
+        .news-left:hover { transform: scale(1.02); box-shadow: 0 30px 60px rgba(26,26,78,0.3); }
+        .news-left h2 { font-size: 42px; font-weight: 800; margin-bottom: 20px; line-height: 1.2; position: relative; z-index: 2; }
+        .news-left p { font-size: 16px; line-height: 1.8; opacity: 0.9; margin-bottom: 40px; position: relative; z-index: 2; }
+        .news-dots { display: flex; gap: 10px; position: relative; z-index: 2; }
+        .news-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.4s; }
+        .news-dot.active { background: white; width: 30px; border-radius: 5px; }
+        .news-dot:hover { background: rgba(255,255,255,0.6); transform: scale(1.2); }
+
+        .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .news-card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid #eee; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .news-card:hover { transform: translateY(-15px) scale(1.02); box-shadow: 0 25px 50px rgba(0,0,0,0.12); border-color: transparent; }
+        .news-img { position: relative; height: 200px; overflow: hidden; }
+        .news-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+        .news-card:hover .news-img img { transform: scale(1.15); }
+        .news-date { position: absolute; top: 16px; left: 16px; background: #e63946; color: white; padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; transition: all 0.3s; }
+        .news-card:hover .news-date { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(230,57,70,0.3); }
+        .news-content { padding: 24px; }
+        .news-meta { font-size: 13px; color: #888; margin-bottom: 12px; }
+        .news-meta span { color: #e63946; font-weight: 600; }
+        .news-content h3 { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 16px; line-height: 1.4; transition: color 0.3s; }
+        .news-card:hover .news-content h3 { color: #e63946; }
+        .news-link { color: #1a1a2e; text-decoration: none; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.3s; }
+        .news-link:hover { gap: 15px; color: #e63946; }
+        .news-link i { transition: transform 0.3s; }
+        .news-card:hover .news-link i { transform: translateX(5px); }
+
+        /* Footer */
+        .footer { background: #1a1a1e; color: white; padding: 80px 5% 40px; position: relative; overflow: hidden; }
+        .footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #e63946, #1a1a4e, #6b8cff, #e63946); background-size: 300% 100%; animation: gradientShift 5s ease infinite; }
+        .footer-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 60px; position: relative; z-index: 2; }
+        .footer-brand .logo { color: white; margin-bottom: 24px; transition: all 0.3s; }
+        .footer-brand .logo:hover { transform: scale(1.05); }
+        .footer-brand .logo-icon { width: 45px; height: 45px; transition: transform 0.5s; }
+        .footer-brand .logo:hover .logo-icon { animation: swing 0.8s ease; }
+        .footer-brand p { font-size: 14px; color: #888; margin-bottom: 8px; transition: color 0.3s; }
+        .footer-brand:hover p { color: #aaa; }
+        .footer-brand .phone { font-size: 24px; font-weight: 700; color: white; margin-bottom: 24px; display: block; text-decoration: none; transition: all 0.3s; }
+        .footer-brand .phone:hover { color: #e63946; transform: scale(1.05); animation: heartbeat 1.5s infinite; }
+        .footer-social { display: flex; gap: 12px; }
+        .footer-social a { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: all 0.4s; font-size: 16px; position: relative; overflow: hidden; }
+        .footer-social a::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: #e63946; border-radius: 50%; transition: all 0.4s; transform: translate(-50%, -50%); }
+        .footer-social a:hover::before { width: 100%; height: 100%; }
+        .footer-social a:hover { transform: translateY(-5px) scale(1.1); color: white; }
+        .footer-social a i { position: relative; z-index: 2; }
+        .footer-column h3 { font-size: 18px; font-weight: 700; margin-bottom: 24px; position: relative; display: inline-block; }
+        .footer-column h3::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 30px; height: 3px; background: #e63946; border-radius: 2px; transition: width 0.3s; }
+        .footer-column:hover h3::after { width: 100%; }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 14px; }
+        .footer-column ul li a { color: #888; text-decoration: none; font-size: 15px; transition: all 0.3s; display: flex; align-items: center; gap: 10px; position: relative; padding-left: 0; }
+        .footer-column ul li a::before { content: '\f054'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 10px; color: #e63946; transition: all 0.3s; }
+        .footer-column ul li a:hover { color: white; padding-left: 10px; }
+        .footer-column ul li a:hover::before { transform: translateX(5px); }
+
+        .footer-bottom { max-width: 1400px; margin: 60px auto 0; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; position: relative; z-index: 2; }
+        .footer-bottom p { font-size: 14px; color: #888; }
+        .footer-bottom a { color: #e63946; text-decoration: none; font-weight: 600; transition: all 0.3s; }
+        .footer-bottom a:hover { color: white; }
+        .footer-bottom-links { display: flex; gap: 24px; }
+        .footer-bottom-links a { color: #888; text-decoration: none; font-size: 14px; transition: all 0.3s; position: relative; }
+        .footer-bottom-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #e63946; transition: width 0.3s; }
+        .footer-bottom-links a:hover { color: white; }
+        .footer-bottom-links a:hover::after { width: 100%; }
+
+        /* Back to Top */
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: linear-gradient(135deg, #6b8cff, #5470e6); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 5px 20px rgba(107,140,255,0.4); transition: all 0.4s; z-index: 999; border: none; font-size: 18px; opacity: 0; pointer-events: none; transform: translateY(20px); }
+        .back-to-top.visible { opacity: 1; pointer-events: all; transform: translateY(0); }
+        .back-to-top:hover { background: linear-gradient(135deg, #5470e6, #6b8cff); transform: translateY(-5px) scale(1.1); box-shadow: 0 10px 30px rgba(107,140,255,0.6); animation: pulse 1.5s infinite; }
+        .back-to-top:hover i { animation: bounceIn 0.5s; }
+
+        /* Mobile Menu */
+        .mobile-menu { position: fixed; top: 0; right: -100%; width: 80%; max-width: 400px; height: 100vh; background: white; z-index: 1001; padding: 100px 40px 40px; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .mobile-menu-overlay.active { opacity: 1; pointer-events: all; }
+        .mobile-menu-close { position: absolute; top: 30px; right: 30px; background: none; border: none; font-size: 24px; cursor: pointer; transition: all 0.3s; }
+        .mobile-menu-close:hover { transform: rotate(90deg) scale(1.2); color: #e63946; }
+        .mobile-menu ul { list-style: none; }
+        .mobile-menu ul li { margin-bottom: 24px; opacity: 0; transform: translateX(30px); transition: all 0.3s; }
+        .mobile-menu.active ul li { opacity: 1; transform: translateX(0); }
+        .mobile-menu.active ul li:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu.active ul li:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-menu.active ul li:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-menu.active ul li:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-menu.active ul li:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-menu.active ul li:nth-child(6) { transition-delay: 0.35s; }
+        .mobile-menu.active ul li:nth-child(7) { transition-delay: 0.4s; }
+        .mobile-menu ul li a { text-decoration: none; color: #1a1a2e; font-size: 18px; font-weight: 600; transition: all 0.3s; display: inline-block; }
+        .mobile-menu ul li a:hover { color: #e63946; transform: translateX(10px); }
+        .mobile-menu .open-account { display: inline-block; margin-top: 20px; opacity: 0; transform: translateY(20px); transition: all 0.3s 0.5s; }
+        .mobile-menu.active .open-account { opacity: 1; transform: translateY(0); }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .hero-title { font-size: 44px; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .news-grid { grid-template-columns: repeat(2, 1fr); }
+            .features-top { grid-template-columns: 1fr 1fr; }
+            .features-top .features-header { grid-column: 1 / -1; }
+        }
+
+        @media (max-width: 992px) {
+            .nav-links { display: none; }
+            .header-right .search-btn, .header-right .atm-link { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero-container { grid-template-columns: 1fr; }
+            .hero-right { display: none; }
+            .about-container { grid-template-columns: 1fr; }
+            .steps-grid { grid-template-columns: 1fr; }
+            .process-container { grid-template-columns: 1fr; }
+            .process-right { display: none; }
+            .testimonials-container { grid-template-columns: 1fr; }
+            .news-container { grid-template-columns: 1fr; }
+            .news-grid { grid-template-columns: 1fr; }
+            .footer-container { grid-template-columns: 1fr 1fr; }
+            .features-top { grid-template-columns: 1fr; }
+            .features-bottom { flex-direction: column; text-align: center; }
+            .award-items { flex-wrap: wrap; justify-content: center; }
+        }
+
+        @media (max-width: 768px) {
+            .hero { padding: 120px 5% 60px; }
+            .hero-title { font-size: 32px; }
+            .hero-desc { font-size: 16px; }
+            .services-grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 32px; }
+            .about-right { padding: 40px; }
+            .about-right h2 { font-size: 28px; }
+            .steps-right { grid-template-columns: 1fr; }
+            .steps-images { grid-template-columns: repeat(2, 1fr); }
+            .process-left h2 { font-size: 32px; }
+            .step-num { font-size: 36px; width: 50px; }
+            .features-bottom h2 { font-size: 28px; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .news-left { padding: 40px; }
+            .news-left h2 { font-size: 32px; }
+            .footer-container { grid-template-columns: 1fr; gap: 40px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .request-form { position: relative; width: 100%; margin-top: 40px; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title { font-size: 28px; }
+            .btn-primary { padding: 14px 24px; font-size: 14px; }
+            .rating-box { padding: 10px 16px; }
+            .rating-score { font-size: 22px; }
+            .service-card { padding: 30px 20px; }
+            .about-ceo { flex-direction: column; text-align: center; }
+            .ceo-contact { margin-left: 0; text-align: center; margin-top: 20px; }
+            .step-item { flex-direction: column; text-align: center; }
+            .step-check { margin: 0 auto; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="logo">
+            <div class="logo-icon">
+                <img src="logo.webp" alt="Stackly logo">
+            </div>
+            Stackly
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="#" class="active">Home <span class="plus">+</span></a></li>
+            <li><a href="card.html">Card Overview <span class="plus">+</span></a></li>
+            <!-- <li><a href="#">Banking <span class="plus">+</span></a></li> -->
+            <li><a href="mortage.html">Mortgage <span class="plus">+</span></a></li>
+            <li><a href="personal.html">Personal Loan <span class="plus">+</span></a></li>
+            <!-- <li><a href="#">Pages <span class="plus">+</span></a></li> -->
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+
+        <div class="header-right">
+          <a href="404.html">  <button class="search-btn"><i class="fas fa-search"></i> Search</button></a>
+            <a href="404.html" class="open-account">Open An Account</a>
+            <a href="404.html" class="atm-link"><i class="fas fa-map-marker-alt"></i> ATM / Branch</a>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" onclick="toggleMobileMenu()"><i class="fas fa-times"></i></button>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Card Overview</a></li>
+            <!-- <li><a href="#">Banking</a></li> -->
+            <li><a href="#">Mortgage</a></li>
+            <li><a href="#">Personal Loan</a></li>
+            <!-- <li><a href="#">Pages</a></li> -->
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <a href="404.html" class="open-account">Open An Account</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-left">
+                <div class="hero-label">Online Banking</div>
+                <h1 class="hero-title">Choose the credit <span class="highlight">card</span> that makes sense for you</h1>
+                <p class="hero-desc">Welcome to Stackly secure and user-friendly online banking platform, designed to provide convenient access to your financial accounts.</p>
+                <div class="hero-buttons">
+                    <a href="404.html" class="btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
+                    <div class="rating-box">
+                        <span class="rating-score">4.9</span>
+                        <div>
+                            <div class="rating-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                            <div class="rating-text">10,000+ Client reviews</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-right">
+                <div class="hero-cards">
+                    <div class="credit-card card-1">
+                        <div class="card-content">
+                            <div class="card-chip"></div>
+                            <div class="card-number">1234 5678 9012 3456</div>
+                            <div class="card-bottom">
+                                <div class="card-holder">Card Holder</div>
+                                <div class="card-logo">VISA</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="credit-card card-2">
+                        <div class="card-content">
+                            <div class="card-chip"></div>
+                            <div class="card-number">5678 9012 3456 7890</div>
+                            <div class="card-bottom">
+                                <div class="card-holder">Card Holder</div>
+                                <div class="card-logo">VISA</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="credit-card card-3">
+                        <div class="card-content">
+                            <div class="card-chip"></div>
+                            <div class="card-number">9012 3456 7890 1234</div>
+                            <div class="card-bottom">
+                                <div class="card-holder">Card Holder</div>
+                                <div class="card-logo">VISA</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="request-form">
+                        <div class="form-title"><i class="fas fa-credit-card"></i> Request for a credit card</div>
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-input" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Number</label>
+                            <input type="tel" class="form-input" placeholder="Enter your number">
+                        </div>
+                        <p class="form-note">We will provide our regularly update to your mail</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="section-header">
+            <h2 class="section-title">Choose what's right for you</h2>
+        </div>
+        <div class="services-grid">
+            <div class="service-card animate-on-scroll animate-fade-up delay-1">
+                <div class="service-icon credit"><i class="fas fa-credit-card"></i></div>
+                <h3>Credit Cards</h3>
+                <p>A credit card is a payment card that allows cardholder to borrow funds from a financial institution</p>
+                <a href="404.html" class="service-link">Get Started <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="service-card animate-on-scroll animate-fade-up delay-2">
+                <div class="service-icon banking"><i class="fas fa-university"></i></div>
+                <h3>Banking</h3>
+                <p>A Personal loan is a type of loan provided by financial institutions, such as banks for personal use.</p>
+                <a href="404.html" class="service-link">Get Started <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="service-card animate-on-scroll animate-fade-up delay-3">
+                <div class="service-icon mortgage"><i class="fas fa-home"></i></div>
+                <h3>Mortgage</h3>
+                <p>A Personal loan is a type of loan provided by financial institutions, such as banks for personal use.</p>
+                <a href="404.html" class="service-link">Get Started <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="service-card animate-on-scroll animate-fade-up delay-4">
+                <div class="service-icon loan"><i class="fas fa-hand-holding-usd"></i></div>
+                <h3>Personal loan</h3>
+                <p>A Personal loan is a type of loan provided by financial institutions, such as banks for personal use.</p>
+                <a href="404.html" class="service-link">Get Started <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about">
+        <div class="about-container">
+            <div class="about-left animate-on-scroll animate-fade-left">
+                <div class="about-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop&fm=webp" alt="Happy customers" class="about-img">
+                    <div class="about-img-overlay"></div>
+                </div>
+            </div>
+            <div class="about-right animate-on-scroll animate-fade-right">
+                <h2>Who we are</h2>
+                <p>Welcome to "Stackly" secure and user-friendly online banking platform, designed to provide convenient access to your financial accounts, including Credit Cards, Banking, Mortgage, and Personal loans. Manage your finances with ease and enjoy a seamless banking experience from the comfort of your home or on the go.</p>
+                <div class="about-ceo">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&fm=webp" alt="CEO" class="ceo-avatar">
+                    <div class="ceo-info">
+                        <h4>Christopher Propst</h4>
+                        <p>Chief Executive Officer</p>
+                    </div>
+                    <div class="ceo-contact">
+                        <p>Call our consultant</p>
+                        <a href="tel:5614455352">(561) 445-5352</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banking Steps Section -->
+    <section class="banking-steps">
+        <div class="steps-container">
+            <div class="steps-grid">
+                <div class="steps-left animate-on-scroll animate-fade-left">
+                    <h2>Banking account opening system</h2>
+                    <p>The process for opening a bank account may vary slightly depending on the bank and the country you are in. However, the general steps involved in opening a bank account</p>
+                    <div class="steps-left-bottom">
+                        <h3>Start banking with ease</h3>
+                        <p>Start by researching and comparing different credit card options available to find the one that suits your needs.</p>
+                        <div class="steps-images">
+                            <div class="step-img">
+                                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=300&h=200&fit=crop&fm=webp" alt="Banking">
+                                <div class="step-img-overlay"></div>
+                            </div>
+                            <div class="step-img">
+                                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=300&h=200&fit=crop&fm=webp" alt="Meeting">
+                                <div class="step-img-overlay"></div>
+                            </div>
+                            <div class="step-img">
+                                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=300&h=200&fit=crop&fm=webp" alt="Team">
+                                <div class="step-img-overlay"></div>
+                            </div>
+                            <div class="step-img">
+                                <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=300&h=200&fit=crop&fm=webp" alt="Finance">
+                                <div class="step-img-overlay"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="steps-right">
+                    <div class="step-item animate-on-scroll animate-scale delay-1">
+                        <div class="step-check"><i class="fas fa-check"></i></div>
+                        <div class="step-text"><h4>Research and choose a bank</h4></div>
+                    </div>
+                    <div class="step-item animate-on-scroll animate-scale delay-2">
+                        <div class="step-check"><i class="fas fa-check"></i></div>
+                        <div class="step-text"><h4>Sign the agreement</h4></div>
+                    </div>
+                    <div class="step-item animate-on-scroll animate-scale delay-3">
+                        <div class="step-check"><i class="fas fa-check"></i></div>
+                        <div class="step-text"><h4>Choose the account type</h4></div>
+                    </div>
+                    <div class="step-item animate-on-scroll animate-scale delay-4">
+                        <div class="step-check"><i class="fas fa-check"></i></div>
+                        <div class="step-text"><h4>Complete account opening forms</h4></div>
+                    </div>
+                    <div class="step-item animate-on-scroll animate-scale delay-5">
+                        <div class="step-check"><i class="fas fa-check"></i></div>
+                        <div class="step-text"><h4>Gather required documents</h4></div>
+                    </div>
+                    <div class="step-item animate-on-scroll animate-scale delay-6">
+                        <div class="step-check"><i class="fas fa-check"></i></div>
+                        <div class="step-text"><h4>Activate and access your account</h4></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Credit Card Process Section -->
+    <section class="process">
+        <div class="process-container">
+            <div class="process-left animate-on-scroll animate-fade-left">
+                <h2>Get credit card from 3 simple process</h2>
+                <p>Getting a credit card typically involves a straightforward process that can be summarized in three simple steps:</p>
+                <div class="process-steps">
+                    <div class="process-step">
+                        <div class="step-num">01</div>
+                        <div class="step-content">
+                            <h3>Research and compare</h3>
+                            <p>Start by researching and comparing different credit card options available to find the one that suits your needs.</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-num">02</div>
+                        <div class="step-content">
+                            <h3>Submit an application</h3>
+                            <p>Once you have identified the credit card that aligns with your preferences, you can proceed to the application process.</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-num">03</div>
+                        <div class="step-content">
+                            <h3>Approval and activation</h3>
+                            <p>After submitting your application, the credit card issuer will review your application and assess your creditworthiness.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="process-right animate-on-scroll animate-fade-right">
+                <div class="process-card-float pcard-1">
+                    <div class="card-content">
+                        <div class="card-chip"></div>
+                        <div class="card-number">1234 5678 9012 3456</div>
+                        <div class="card-bottom">
+                            <div class="card-holder">Card Holder</div>
+                            <div class="card-logo">VISA</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="process-card-float pcard-2">
+                    <div class="card-content">
+                        <div class="card-chip"></div>
+                        <div class="card-number">5678 9012 3456 7890</div>
+                        <div class="card-bottom">
+                            <div class="card-holder">Card Holder</div>
+                            <div class="card-logo">VISA</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="process-badge">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>No overdraft<br>Fees</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="features-container">
+            <div class="features-top">
+                <div class="features-header animate-on-scroll animate-fade-up">
+                    <h2>How to choose<br>the right bank</h2>
+                    <p>Choosing the right bank account is an important decision that can impact your financial management and banking experience.</p>
+                </div>
+                <div class="feature-box brown animate-on-scroll animate-fade-up delay-2">
+                    <div class="icon-circle"><i class="fas fa-handshake"></i></div>
+                    <h3>Flexible terms</h3>
+                    <p>After submitting your application, the credit card issuer will review your application and assess your creditworthiness.</p>
+                </div>
+                <div class="feature-box blue animate-on-scroll animate-fade-up delay-3">
+                    <div class="icon-circle"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Get 24/7 identity protection</h3>
+                    <p>After submitting your application, the credit card issuer will review your application and assess your creditworthiness.</p>
+                </div>
+            </div>
+            <div class="features-bottom animate-on-scroll animate-bounce">
+                <h2>2023 World's best<br>Award winning bank</h2>
+                <div class="award-items">
+                    <div class="award-item">
+                        <i class="fas fa-trophy"></i>
+                        <h4>Retail banking<br>innovation Awards</h4>
+                    </div>
+                    <div class="award-item">
+                        <i class="fas fa-award"></i>
+                        <h4>World finance<br>banking Awards</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="testimonials-container">
+            <div class="testimonials-left">
+                <h2 class="animate-on-scroll animate-fade-up">What our customers<br>say About us</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card animate-on-scroll animate-fade-up delay-1">
+                        <div class="testimonial-header">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&fm=webp" alt="William" class="testimonial-avatar">
+                            <div class="testimonial-info">
+                                <h4>William Kimbrough</h4>
+                                <p>Happy Client</p>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">"Auctor duis ipsum non nibh aenean dui. Pharetra at quis et consectetur in dignissim ornare et. Nulla vehicula sed tortor sed volutpat. Ultrices faucibus aliquam at imperdiet gravida tincidunt pulvinar pretium."</p>
+                        <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    </div>
+                    <div class="testimonial-card animate-on-scroll animate-fade-up delay-2">
+                        <div class="testimonial-header">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&fm=webp" alt="Tresa" class="testimonial-avatar">
+                            <div class="testimonial-info">
+                                <h4>Tresa Petway</h4>
+                                <p>Happy Client</p>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">"Auctor duis ipsum non nibh aenean dui. Pharetra at quis et consectetur in dignissim ornare et. Nulla vehicula sed tortor sed volutpat. Ultrices faucibus aliquam at imperdiet gravida tincidunt pulvinar pretium."</p>
+                        <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-column">
+                <div class="stat-box purple animate-on-scroll animate-scale delay-1">
+                    <div class="stat-icon">🏦</div>
+                    <div class="stat-num" data-count="800">0</div>
+                    <div class="stat-label">Happy Customer</div>
+                </div>
+                <div class="stat-box orange animate-on-scroll animate-scale delay-2">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-num" data-count="25">0</div>
+                    <div class="stat-label">Years in banking</div>
+                </div>
+                <div class="stat-box green animate-on-scroll animate-scale delay-3">
+                    <div class="stat-icon">🏢</div>
+                    <div class="stat-num" data-count="150">0</div>
+                    <div class="stat-label">Branches</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="news">
+        <div class="news-container">
+            <div class="news-left animate-on-scroll animate-fade-left">
+                <h2>Latest IRA<br>banking news</h2>
+                <p>Pharetra at quis et consectetur in dignissim ornare et. Ultrices faucibus aliquam at imperdiet gravida tincidunt pulvinar pretium.</p>
+                <div class="news-dots">
+                    <div class="news-dot active"></div>
+                    <div class="news-dot"></div>
+                    <div class="news-dot"></div>
+                </div>
+            </div>
+            <div class="news-grid">
+                <div class="news-card animate-on-scroll animate-fade-up delay-1">
+                    <div class="news-img">
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop&fm=webp" alt="News">
+                        <div class="news-date">October 29, 2023</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">By: <span>Stackly</span> | (0) Comment</div>
+                        <h3>Online banking tips for credit cards, and Personal loans</h3>
+                        <a href="404.html" class="news-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="news-card animate-on-scroll animate-fade-up delay-2">
+                    <div class="news-img">
+                        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&h=300&fit=crop&fm=webp" alt="News">
+                        <div class="news-date">October 29, 2023</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">By: <span>Stackly</span> | (0) Comment</div>
+                        <h3>A comprehensive guide to credit cards & Personal loans</h3>
+                        <a href="404.html" class="news-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="news-card animate-on-scroll animate-fade-up delay-3">
+                    <div class="news-img">
+                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&h=300&fit=crop&fm=webp" alt="News">
+                        <div class="news-date">October 29, 2023</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">By: <span>Stackly</span> | (0) Comment</div>
+                        <h3>Maximizing banking for your future</h3>
+                        <a href="404.html" class="news-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <img src="logo.webp" alt="Stackly logo">
+                    </div>
+                    Stackly
+                </a>
+                <p>Need Help</p>
+                <a href="tel:5614455352" class="phone">(561) 445-5352</a>
+                <div class="footer-social">
+                    <a href="404.html"><i class="fab fa-twitter"></i></a>
+                    <a href="404.html"><i class="fab fa-facebook-f"></i></a>
+                    <a href="404.html"><i class="fab fa-instagram"></i></a>
+                    <a href="404.html"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="card.html">Card Overview</a></li>
+                    <li><a href="mortage.html">Mortage loan</a></li>
+                    <li><a href="personal.html">Personal loan</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="404.html">Credit card</a></li>
+                    <li><a href="404.html">Banking</a></li>
+                    <li><a href="404.html">Deposit</a></li>
+                    <li><a href="404.html">Apply</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Help Center</h3>
+                <ul>
+                    <li><a href="404.html">Terms & Conditions</a></li>
+                    <li><a href="404.html">FAQ</a></li>
+                    <li><a href="404.html">Privacy Policy</a></li>
+                    <li><a href="404.html">ATM locator</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© Stackly is proudly owned by <a href="#">EnvyTheme</a></p>
+            <div class="footer-bottom-links">
+                <a href="404.html">Terms & Conditions</a>
+                <a href="404.html">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.querySelector('.mobile-menu-overlay').classList.toggle('active');
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+            } else {
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        // Back to top button visibility
+        window.addEventListener('scroll', function() {
+            const btn = document.querySelector('.back-to-top');
+            if (window.scrollY > 500) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+
+        // Scroll Animation Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+
+                    // Animate counters
+                    const counter = entry.target.querySelector('.stat-num[data-count]');
+                    if (counter && !counter.classList.contains('counted')) {
+                        counter.classList.add('counted');
+                        const target = parseInt(counter.getAttribute('data-count'));
+                        animateCounter(counter, target);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Counter animation
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target + '+';
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 30);
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

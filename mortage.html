@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortgage Solutions - Stackly Banking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #1a1a2e; overflow-x: hidden; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes floatSlow { 0%, 100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-14px) rotate(-2deg); } }
+        @keyframes floatSlow2 { 0%, 100% { transform: translateY(0) rotate(5deg); } 50% { transform: translateY(-10px) rotate(8deg); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 20px rgba(230,57,70,0.28); } 50% { box-shadow: 0 0 40px rgba(230,57,70,0.5); } }
+        @keyframes morphBlob { 0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; } 50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; } }
+        @keyframes drawLine { from { width: 0; } to { width: 100%; } }
+        .header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 0 5%; display: flex; align-items: center; justify-content: space-between; height: 80px; animation: slideDown 0.6s ease-out; }
+        .logo { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 24px; color: #1a1a2e; text-decoration: none; transition: all 0.3s; }
+        .logo:hover { transform: scale(1.05); }
+        .logo-icon { width: 40px; height: 40px; position: relative; transition: transform 0.5s; }
+        .logo:hover .logo-icon { animation: pulse 0.8s ease; }
+        .logo-icon img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; font-size: 15px; transition: all 0.3s; display: flex; align-items: center; gap: 4px; position: relative; padding: 5px 0; }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #e63946; transition: width 0.3s ease; }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover, .nav-links a.active { color: #e63946; }
+        .nav-links a .plus { font-size: 12px; color: #999; transition: transform 0.3s; }
+        .nav-links a:hover .plus { transform: rotate(90deg); color: #e63946; }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .search-btn { background: none; border: none; font-size: 16px; cursor: pointer; color: #333; display: flex; align-items: center; gap: 8px; font-weight: 500; transition: all 0.3s; padding: 8px 12px; border-radius: 8px; text-decoration: none; }
+        .search-btn:hover { background: #f0f0f0; color: #e63946; transform: scale(1.05); }
+        .atm-link { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #333; font-weight: 500; font-size: 14px; transition: all 0.3s; }
+        .atm-link i { color: #e63946; transition: transform 0.3s; }
+        .atm-link:hover { color: #e63946; }
+        .atm-link:hover i { animation: bounceIn 0.5s; }
+        .open-account { background: linear-gradient(135deg, #1a1a4e, #2d2d5a); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.3s; position: relative; overflow: hidden; border: none; cursor: pointer; display: inline-block; }
+        .open-account:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(26,26,78,0.3); animation: glow 2s infinite; }
+        .mobile-menu .open-account { display: inline-block; margin-top: 20px; }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 24px; cursor: pointer; }
+        .page-hero { min-height: 60vh; padding: 140px 5% 80px; background: linear-gradient(135deg, #1a1a4e 0%, #2d2d5a 52%, #e63946 100%); display: flex; align-items: center; position: relative; overflow: hidden; }
+        .page-hero::before, .page-hero::after { content: ''; position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%); animation: morphBlob 12s ease-in-out infinite; }
+        .page-hero::before { top: -15%; right: -10%; width: 520px; height: 520px; }
+        .page-hero::after { bottom: -25%; left: -15%; width: 420px; height: 420px; animation-direction: reverse; }
+        .page-hero-container, .section-container, .footer-container, .footer-bottom { max-width: 1400px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+        .page-hero-container { text-align: center; }
+        .page-hero-label, .section-label { color: #ff6b6b; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 18px; display: inline-flex; align-items: center; gap: 10px; }
+        .page-hero-label::before, .section-label::before { content: '\f1ad'; font-family: 'Font Awesome 6 Free'; font-weight: 900; }
+        .page-hero-title, .section-title { font-size: 56px; font-weight: 800; color: white; margin-bottom: 24px; line-height: 1.15; }
+        .page-hero-title .highlight, .section-title .highlight { position: relative; display: inline-block; }
+        .page-hero-title .highlight::after, .section-title .highlight::after { content: ''; position: absolute; bottom: 6px; left: 0; right: 0; height: 12px; background: rgba(230,57,70,0.3); z-index: -1; border-radius: 4px; animation: drawLine 1s ease-out 0.8s both; transform-origin: left; }
+        .page-hero-desc { font-size: 18px; color: rgba(255,255,255,0.82); line-height: 1.7; max-width: 700px; margin: 0 auto 38px; }
+        .breadcrumb { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+        .breadcrumb a, .breadcrumb span { font-size: 14px; text-decoration: none; }
+        .breadcrumb a { color: rgba(255,255,255,0.72); }
+        .breadcrumb span { color: white; font-weight: 600; }
+        .section { padding: 100px 5%; position: relative; overflow: hidden; }
+        .section.light { background: white; }
+        .section.soft { background: linear-gradient(135deg, #f0f4ff 0%, #fff0f3 100%); }
+        .section-header { text-align: center; margin-bottom: 60px; position: relative; z-index: 2; }
+        .section-title { color: #1a1a2e; font-size: 42px; margin-bottom: 16px; position: relative; display: inline-block; }
+        .section-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background: linear-gradient(90deg, #e63946, #1a1a4e); border-radius: 2px; }
+        .section-desc { font-size: 16px; color: #666; line-height: 1.7; max-width: 700px; margin: 30px auto 0; }
+        .grid-3 { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; position: relative; z-index: 2; }
+        .grid-2 { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 2; }
+        .card { background: white; border: 1px solid #eee; border-radius: 22px; padding: 32px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); transition: all 0.35s ease; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(0,0,0,0.12); }
+        .icon { width: 72px; height: 72px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px; }
+        .icon.red { background: #fff0f3; color: #e63946; }
+        .icon.blue { background: #f0f4ff; color: #1a1a4e; }
+        .icon.green { background: #e8f5e9; color: #2e7d32; }
+        .card h3 { font-size: 22px; margin-bottom: 12px; color: #1a1a2e; }
+        .card p { color: #666; font-size: 15px; line-height: 1.7; }
+        .feature-list { list-style: none; margin-top: 20px; display: grid; gap: 12px; }
+        .feature-list li { display: flex; gap: 12px; align-items: flex-start; color: #444; font-size: 14px; }
+        .feature-list i { color: #e63946; margin-top: 4px; }
+        .panel { background: linear-gradient(135deg, #1a1a4e 0%, #2d2d5a 100%); color: white; border-radius: 24px; padding: 40px; position: relative; overflow: hidden; }
+        .panel::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%); animation: pulse 6s ease-in-out infinite; }
+        .panel > * { position: relative; z-index: 2; }
+        .steps { display: grid; gap: 16px; margin-top: 28px; }
+        .step { display: flex; gap: 16px; align-items: flex-start; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08); padding: 18px; border-radius: 16px; }
+        .step-badge { width: 38px; height: 38px; border-radius: 50%; background: #e63946; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+        .cta-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 28px; }
+        .btn-primary, .btn-secondary { display: inline-flex; align-items: center; gap: 10px; padding: 14px 26px; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s; }
+        .btn-primary { background: linear-gradient(135deg, #e63946, #ff6b6b); color: white; }
+        .btn-secondary { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.25); }
+        .btn-primary:hover, .btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+        .mortgage-visual { position: relative; height: 420px; }
+        .house-card, .rate-card { position: absolute; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); overflow: hidden; }
+        .house-card { width: 320px; height: 260px; background: linear-gradient(135deg, #fff 0%, #f0f4ff 100%); top: 30px; left: 20px; animation: floatSlow 6s ease-in-out infinite; }
+        .rate-card { width: 240px; height: 170px; background: linear-gradient(135deg, #e63946 0%, #ff6b6b 100%); bottom: 20px; right: 30px; animation: floatSlow2 7s ease-in-out infinite 0.8s; color: white; padding: 24px; }
+        .house-roof { width: 0; height: 0; border-left: 110px solid transparent; border-right: 110px solid transparent; border-bottom: 90px solid #1a1a4e; margin: 28px auto 0; }
+        .house-body { width: 190px; height: 120px; background: #fffbf0; margin: -8px auto 0; border-radius: 10px 10px 16px 16px; position: relative; }
+        .house-door, .house-window { position: absolute; background: #1a1a4e; border-radius: 6px; }
+        .house-door { width: 34px; height: 62px; bottom: 0; left: 78px; }
+        .house-window { width: 36px; height: 36px; top: 24px; left: 24px; box-shadow: 90px 0 0 #e63946; }
+        .rate-card h3 { margin-bottom: 10px; }
+        .rate { font-size: 42px; font-weight: 800; margin: 8px 0; }
+        .footer { background: #1a1a1e; color: white; padding: 80px 5% 40px; position: relative; overflow: hidden; }
+        .footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #e63946, #1a1a4e, #6b8cff, #e63946); background-size: 300% 100%; animation: gradientShift 5s ease infinite; }
+        .footer-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 60px; position: relative; z-index: 2; }
+        .footer-brand .logo { color: white; margin-bottom: 24px; transition: all 0.3s; }
+        .footer-brand .logo:hover { transform: scale(1.05); }
+        .footer-brand .logo-icon { width: 45px; height: 45px; transition: transform 0.5s; }
+        .footer-brand .logo:hover .logo-icon { animation: swing 0.8s ease; }
+        .footer-brand p { font-size: 14px; color: #888; margin-bottom: 8px; transition: color 0.3s; }
+        .footer-brand:hover p { color: #aaa; }
+        .footer-brand .phone { font-size: 24px; font-weight: 700; color: white; margin-bottom: 24px; display: block; text-decoration: none; transition: all 0.3s; }
+        .footer-brand .phone:hover { color: #e63946; transform: scale(1.05); animation: heartbeat 1.5s infinite; }
+        .footer-social { display: flex; gap: 12px; }
+        .footer-social a { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: all 0.4s; font-size: 16px; position: relative; overflow: hidden; }
+        .footer-social a::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: #e63946; border-radius: 50%; transition: all 0.4s; transform: translate(-50%, -50%); }
+        .footer-social a:hover::before { width: 100%; height: 100%; }
+        .footer-social a:hover { transform: translateY(-5px) scale(1.1); color: white; }
+        .footer-social a i { position: relative; z-index: 2; }
+        .footer-column h3 { font-size: 18px; font-weight: 700; margin-bottom: 24px; position: relative; display: inline-block; }
+        .footer-column h3::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 30px; height: 3px; background: #e63946; border-radius: 2px; transition: width 0.3s; }
+        .footer-column:hover h3::after { width: 100%; }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 14px; }
+        .footer-column ul li a { color: #888; text-decoration: none; font-size: 15px; transition: all 0.3s; display: flex; align-items: center; gap: 10px; position: relative; padding-left: 0; }
+        .footer-column ul li a::before { content: '\f054'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 10px; color: #e63946; transition: all 0.3s; }
+        .footer-column ul li a:hover { color: white; padding-left: 10px; }
+        .footer-column ul li a:hover::before { transform: translateX(5px); }
+        .footer-bottom { max-width: 1400px; margin: 60px auto 0; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; position: relative; z-index: 2; }
+        .footer-bottom p { font-size: 14px; color: #888; }
+        .footer-bottom a { color: #e63946; text-decoration: none; font-weight: 600; transition: all 0.3s; }
+        .footer-bottom a:hover { color: white; }
+        .footer-bottom-links { display: flex; gap: 24px; }
+        .footer-bottom-links a { color: #888; text-decoration: none; font-size: 14px; transition: all 0.3s; position: relative; }
+        .footer-bottom-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #e63946; transition: width 0.3s; }
+        .footer-bottom-links a:hover { color: white; }
+        .footer-bottom-links a:hover::after { width: 100%; }
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: linear-gradient(135deg, #6b8cff, #5470e6); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 5px 20px rgba(107,140,255,0.4); transition: all 0.4s; z-index: 999; border: none; font-size: 18px; opacity: 0; pointer-events: none; transform: translateY(20px); }
+        .back-to-top.visible { opacity: 1; pointer-events: all; transform: translateY(0); }
+        .mobile-menu { position: fixed; top: 0; right: -100%; width: 80%; max-width: 400px; height: 100vh; background: white; z-index: 1001; padding: 100px 40px 40px; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .mobile-menu-overlay.active { opacity: 1; pointer-events: all; }
+        .mobile-menu-close { position: absolute; top: 30px; right: 30px; background: none; border: none; font-size: 24px; cursor: pointer; }
+        .mobile-menu ul { list-style: none; }
+        .mobile-menu li { margin-bottom: 22px; }
+        .mobile-menu a { text-decoration: none; color: #1a1a2e; font-size: 18px; font-weight: 600; }
+        @media (max-width: 1200px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } .grid-2 { grid-template-columns: 1fr; } .mortgage-visual { display: none; } }
+        @media (max-width: 992px) { .nav-links { display: none; } .mobile-menu-btn { display: block; } .page-hero-title { font-size: 42px; } .section-title { font-size: 34px; } .grid-3 { grid-template-columns: 1fr; } .footer-container { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .page-hero { padding: 120px 5% 60px; } .page-hero-title { font-size: 32px; } .page-hero-desc { font-size: 16px; } .section { padding: 80px 5%; } .cta-row { flex-direction: column; } .btn-primary, .btn-secondary { justify-content: center; } .footer-bottom { flex-direction: column; text-align: center; } }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+    </style>
+    <base target="_blank">
+</head>
+<body>
+<header class="header">
+    <a href="index.html" class="logo">
+        <div class="logo-icon">
+            <img src="logo.webp" alt="Stackly logo">
+        </div>
+        Stackly
+    </a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home <span class="plus">+</span></a></li>
+        <li><a href="card.html">Card Overview <span class="plus">+</span></a></li>
+        <li><a href="mortage.html" class="active">Mortgage <span class="plus">+</span></a></li>
+        <li><a href="personal.html">Personal Loan <span class="plus">+</span></a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="header-right">
+        <a href="404.html" class="search-btn"><i class="fas fa-search"></i> Search</a>
+        <a href="404.html" class="open-account">Open An Account</a>
+        <a href="404.html" class="atm-link"><i class="fas fa-map-marker-alt"></i> ATM / Branch</a>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+    </div>
+</header>
+<div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
+<div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" onclick="toggleMobileMenu()"><i class="fas fa-times"></i></button>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="card.html">Card Overview</a></li>
+        <li><a href="mortage.html">Mortgage</a></li>
+        <li><a href="personal.html">Personal Loan</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="404.html" class="open-account">Open An Account</a>
+</div>
+<section class="page-hero">
+    <div class="page-hero-container">
+        <div class="page-hero-label">Home Financing</div>
+        <h1 class="page-hero-title">Mortgage Solutions That Fit <span class="highlight">Your Next Move</span></h1>
+        <p class="page-hero-desc">From first homes to refinancing, Stackly makes mortgage planning clearer with competitive rates, fast pre-approval, and expert guidance.</p>
+        <div class="breadcrumb"><a href="index.html">Home</a><i class="fas fa-chevron-right" style="color:#ff6b6b;font-size:12px;"></i><span>Mortgage</span></div>
+    </div>
+</section>
+<section class="section light">
+    <div class="section-header">
+        <div class="section-label">Mortgage Plans</div>
+        <h2 class="section-title">Find the Right <span class="highlight">Financing</span></h2>
+        <p class="section-desc">Compare mortgage options built for different stages of home ownership.</p>
+    </div>
+    <div class="grid-3">
+        <div class="card">
+            <div class="icon red"><i class="fas fa-house"></i></div>
+            <h3>First-Time Buyer</h3>
+            <p>Simple approval steps and low down-payment support for buying your first home.</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-check-circle"></i> Guidance from application to closing</li>
+                <li><i class="fas fa-check-circle"></i> Flexible term options</li>
+                <li><i class="fas fa-check-circle"></i> Rate lock support</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="icon blue"><i class="fas fa-arrows-rotate"></i></div>
+            <h3>Refinance</h3>
+            <p>Lower your monthly payment or change your loan term with a refinance review.</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-check-circle"></i> Cash-out options available</li>
+                <li><i class="fas fa-check-circle"></i> Fast document review</li>
+                <li><i class="fas fa-check-circle"></i> Fixed and adjustable terms</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="icon green"><i class="fas fa-building"></i></div>
+            <h3>Investment Property</h3>
+            <p>Finance rental properties with structured underwriting and long-term support.</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-check-circle"></i> Competitive investor pricing</li>
+                <li><i class="fas fa-check-circle"></i> Multi-property consideration</li>
+                <li><i class="fas fa-check-circle"></i> Dedicated loan specialist</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<section class="section soft">
+    <div class="grid-2">
+        <div>
+            <div class="section-label">How It Works</div>
+            <h2 class="section-title" style="color:#1a1a2e;text-align:left;display:block;">A Clear Path to <span class="highlight">Home Ownership</span></h2>
+            <p class="section-desc" style="margin-left:0;text-align:left;">Our team keeps the mortgage process organized so you can focus on the home, not the paperwork.</p>
+            <div class="steps">
+                <div class="step"><div class="step-badge">1</div><div><strong>Pre-approval</strong><p>Share your income and credit details for a quick review.</p></div></div>
+                <div class="step"><div class="step-badge">2</div><div><strong>Home search</strong><p>Shop with confidence using your approved budget.</p></div></div>
+                <div class="step"><div class="step-badge">3</div><div><strong>Closing support</strong><p>We guide you through underwriting, appraisal, and final signing.</p></div></div>
+            </div>
+            <div class="cta-row">
+                <a href="404.html" class="btn-primary">Get Pre-Approved <i class="fas fa-arrow-right"></i></a>
+                <a href="404.html" class="btn-secondary">Explore Personal Loans <i class="fas fa-chevron-right"></i></a>
+            </div>
+        </div>
+        <div class="mortgage-visual">
+            <div class="house-card">
+                <div class="house-roof"></div>
+                <div class="house-body">
+                    <div class="house-window"></div>
+                    <div class="house-door"></div>
+                </div>
+            </div>
+            <div class="rate-card">
+                <h3>Today's Rate</h3>
+                <div class="rate">6.49%</div>
+                <p>Fixed-rate mortgage example with flexible terms.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section light">
+    <div class="section-header">
+        <div class="section-label">Why Stackly</div>
+        <h2 class="section-title" style="color:#1a1a2e;">Mortgage Support That <span class="highlight">Feels Personal</span></h2>
+        <p class="section-desc">Every borrower gets a dedicated specialist and a straightforward process.</p>
+    </div>
+    <div class="grid-3">
+        <div class="card"><div class="icon red"><i class="fas fa-user-shield"></i></div><h3>Dedicated Advisor</h3><p>Work with one specialist who keeps your application moving.</p></div>
+        <div class="card"><div class="icon blue"><i class="fas fa-file-signature"></i></div><h3>Simple Documents</h3><p>Upload your pay stubs, tax returns, and statements securely.</p></div>
+        <div class="card"><div class="icon green"><i class="fas fa-headset"></i></div><h3>Responsive Help</h3><p>Questions get answered quickly so your timeline stays on track.</p></div>
+    </div>
+</section>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <img src="logo.webp" alt="Stackly logo">
+                </div>
+                Stackly
+            </a>
+            <p>Need Help</p>
+            <a href="tel:5614455352" class="phone">(561) 445-5352</a>
+            <div class="footer-social">
+                <a href="404.html"><i class="fab fa-twitter"></i></a>
+                <a href="404.html"><i class="fab fa-facebook-f"></i></a>
+                <a href="404.html"><i class="fab fa-instagram"></i></a>
+                <a href="404.html"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+        <div class="footer-column">
+            <h3>Company</h3>
+            <ul>
+                <li><a href="card.html">Card Overview</a></li>
+                <li><a href="mortage.html">Mortage loan</a></li>
+                <li><a href="personal.html">Personal loan</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Services</h3>
+            <ul>
+                <li><a href="404.html">Credit card</a></li>
+                <li><a href="404.html">Banking</a></li>
+                <li><a href="404.html">Deposit</a></li>
+                <li><a href="404.html">Apply</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Help Center</h3>
+            <ul>
+                <li><a href="404.html">Terms & Conditions</a></li>
+                <li><a href="404.html">FAQ</a></li>
+                <li><a href="404.html">Privacy Policy</a></li>
+                <li><a href="404.html">ATM locator</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© Stackly is proudly owned by <a href="#">EnvyTheme</a></p>
+        <div class="footer-bottom-links">
+            <a href="404.html">Terms & Conditions</a>
+            <a href="404.html">Privacy Policy</a>
+        </div>
+    </div>
+</footer>
+<button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"><i class="fas fa-arrow-up"></i></button>
+<script>
+function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('active'); document.querySelector('.mobile-menu-overlay').classList.toggle('active'); }
+window.addEventListener('scroll', function() {
+    const btn = document.querySelector('.back-to-top');
+    btn.classList.toggle('visible', window.scrollY > 500);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Overview - Stackly Banking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #1a1a2e; overflow-x: hidden; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInLeft { from { opacity: 0; transform: translateX(-80px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeInRight { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+@keyframes floatSlow { 0%, 100% { transform: translateY(0px) rotate(-10deg); } 50% { transform: translateY(-15px) rotate(-7deg); } }
+@keyframes floatSlow2 { 0%, 100% { transform: translateY(0px) rotate(5deg); } 50% { transform: translateY(-12px) rotate(8deg); } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes rotateIn { from { opacity: 0; transform: rotate(-180deg) scale(0.5); } to { opacity: 1; transform: rotate(0deg) scale(1); } }
+@keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes glow { 0%, 100% { box-shadow: 0 0 20px rgba(230,57,70,0.3); } 50% { box-shadow: 0 0 40px rgba(230,57,70,0.6); } }
+@keyframes morphBlob { 0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; } 50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; } }
+@keyframes swing { 0% { transform: rotate(0deg); } 20% { transform: rotate(15deg); } 40% { transform: rotate(-10deg); } 60% { transform: rotate(5deg); } 80% { transform: rotate(-5deg); } 100% { transform: rotate(0deg); } }
+@keyframes heartbeat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } 70% { transform: scale(1); } }
+@keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes slideInBottom { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes drawLine { from { width: 0; } to { width: 100%; } }
+@keyframes flipIn { from { transform: perspective(400px) rotateY(90deg); opacity: 0; } to { transform: perspective(400px) rotateY(0deg); opacity: 1; } }
+@keyframes elastic { 0% { transform: scale(0); } 50% { transform: scale(1.1); } 70% { transform: scale(0.95); } 100% { transform: scale(1); } }
+@keyframes wobble { 0% { transform: translateX(0); } 15% { transform: translateX(-15px) rotate(-5deg); } 30% { transform: translateX(10px) rotate(3deg); } 45% { transform: translateX(-10px) rotate(-3deg); } 60% { transform: translateX(5px) rotate(2deg); } 75% { transform: translateX(-5px) rotate(-1deg); } 100% { transform: translateX(0); } }
+@keyframes tada { 0% { transform: scale(1); } 10%, 20% { transform: scale(0.9) rotate(-3deg); } 30%, 50%, 70%, 90% { transform: scale(1.1) rotate(3deg); } 40%, 60%, 80% { transform: scale(1.1) rotate(-3deg); } 100% { transform: scale(1) rotate(0); } }
+@keyframes rubberBand { 0% { transform: scale(1); } 30% { transform: scale(1.25, 0.75); } 40% { transform: scale(0.75, 1.25); } 50% { transform: scale(1.15, 0.85); } 65% { transform: scale(0.95, 1.05); } 75% { transform: scale(1.05, 0.95); } 100% { transform: scale(1); } }
+@keyframes jello { 0%, 11.1%, 100% { transform: translate3d(0,0,0); } 22.2% { transform: skewX(-12.5deg) skewY(-12.5deg); } 33.3% { transform: skewX(6.25deg) skewY(6.25deg); } 44.4% { transform: skewX(-3.125deg) skewY(-3.125deg); } 55.5% { transform: skewX(1.5625deg) skewY(1.5625deg); } 66.6% { transform: skewX(-0.78125deg) skewY(-0.78125deg); } 77.7% { transform: skewX(0.390625deg) skewY(0.390625deg); } 88.8% { transform: skewX(-0.1953125deg) skewY(-0.1953125deg); } }
+@keyframes jackInTheBox { from { opacity: 0; transform: scale(0.1) rotate(30deg); transform-origin: center bottom; } 50% { transform: rotate(-10deg); } 70% { transform: rotate(3deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
+@keyframes rollIn { from { opacity: 0; transform: translate3d(-100%,0,0) rotate3d(0,0,1,-120deg); } to { opacity: 1; transform: translate3d(0,0,0); } }
+@keyframes lightSpeedIn { from { transform: translate3d(100%,0,0) skewX(-30deg); opacity: 0; } 60% { transform: skewX(20deg); opacity: 1; } 80% { transform: skewX(-5deg); } to { transform: translate3d(0,0,0); } }
+@keyframes zoomIn { from { opacity: 0; transform: scale3d(0.3,0.3,0.3); } 50% { opacity: 1; } }
+@keyframes zoomInDown { from { opacity: 0; transform: scale3d(0.1,0.1,0.1) translate3d(0,-1000px,0); animation-timing-function: cubic-bezier(0.55,0.055,0.675,0.19); } 60% { opacity: 1; transform: scale3d(0.475,0.475,0.475) translate3d(0,60px,0); animation-timing-function: cubic-bezier(0.175,0.885,0.32,1); } }
+@keyframes zoomInLeft { from { opacity: 0; transform: scale3d(0.1,0.1,0.1) translate3d(-1000px,0,0); animation-timing-function: cubic-bezier(0.55,0.055,0.675,0.19); } 60% { opacity: 1; transform: scale3d(0.475,0.475,0.475) translate3d(10px,0,0); animation-timing-function: cubic-bezier(0.175,0.885,0.32,1); } }
+@keyframes zoomInRight { from { opacity: 0; transform: scale3d(0.1,0.1,0.1) translate3d(1000px,0,0); animation-timing-function: cubic-bezier(0.55,0.055,0.675,0.19); } 60% { opacity: 1; transform: scale3d(0.475,0.475,0.475) translate3d(-10px,0,0); animation-timing-function: cubic-bezier(0.175,0.885,0.32,1); } }
+@keyframes zoomInUp { from { opacity: 0; transform: scale3d(0.1,0.1,0.1) translate3d(0,1000px,0); animation-timing-function: cubic-bezier(0.55,0.055,0.675,0.19); } 60% { opacity: 1; transform: scale3d(0.475,0.475,0.475) translate3d(0,-60px,0); animation-timing-function: cubic-bezier(0.175,0.885,0.32,1); } }
+@keyframes slideInDown { from { transform: translate3d(0,-100%,0); visibility: visible; } to { transform: translate3d(0,0,0); } }
+@keyframes slideInLeft { from { transform: translate3d(-100%,0,0); visibility: visible; } to { transform: translate3d(0,0,0); } }
+@keyframes slideInRight { from { transform: translate3d(100%,0,0); visibility: visible; } to { transform: translate3d(0,0,0); } }
+@keyframes slideInUp { from { transform: translate3d(0,100%,0); visibility: visible; } to { transform: translate3d(0,0,0); } }
+@keyframes fadeInDown { from { opacity: 0; transform: translate3d(0,-100%,0); } to { opacity: 1; transform: translate3d(0,0,0); } }
+@keyframes fadeInDownBig { from { opacity: 0; transform: translate3d(0,-2000px,0); } to { opacity: 1; transform: translate3d(0,0,0); } }
+@keyframes fadeInLeftBig { from { opacity: 0; transform: translate3d(-2000px,0,0); } to { opacity: 1; transform: translate3d(0,0,0); } }
+@keyframes fadeInRightBig { from { opacity: 0; transform: translate3d(2000px,0,0); } to { opacity: 1; transform: translate3d(0,0,0); } }
+@keyframes fadeInUpBig { from { opacity: 0; transform: translate3d(0,2000px,0); } to { opacity: 1; transform: translate3d(0,0,0); } }
+@keyframes rotateInDownLeft { from { transform-origin: left bottom; transform: rotate3d(0,0,1,-45deg); opacity: 0; } to { transform-origin: left bottom; transform: translate3d(0,0,0); opacity: 1; } }
+@keyframes rotateInDownRight { from { transform-origin: right bottom; transform: rotate3d(0,0,1,45deg); opacity: 0; } to { transform-origin: right bottom; transform: translate3d(0,0,0); opacity: 1; } }
+@keyframes rotateInUpLeft { from { transform-origin: left bottom; transform: rotate3d(0,0,1,45deg); opacity: 0; } to { transform-origin: left bottom; transform: translate3d(0,0,0); opacity: 1; } }
+@keyframes rotateInUpRight { from { transform-origin: right bottom; transform: rotate3d(0,0,1,-90deg); opacity: 0; } to { transform-origin: right bottom; transform: translate3d(0,0,0); opacity: 1; } }
+@keyframes bounceInDown { from, 60%, 75%, 90%, to { animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); } 0% { opacity: 0; transform: translate3d(0, -3000px, 0) scaleY(3); } 60% { opacity: 1; transform: translate3d(0, 25px, 0) scaleY(0.9); } 75% { transform: translate3d(0, -10px, 0) scaleY(0.95); } 90% { transform: translate3d(0, 5px, 0) scaleY(0.985); } to { transform: translate3d(0, 0, 0); } }
+@keyframes bounceInLeft { from, 60%, 75%, 90%, to { animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); } 0% { opacity: 0; transform: translate3d(-3000px, 0, 0) scaleX(3); } 60% { opacity: 1; transform: translate3d(25px, 0, 0) scaleX(1); } 75% { transform: translate3d(-10px, 0, 0) scaleX(0.98); } 90% { transform: translate3d(5px, 0, 0) scaleX(0.995); } to { transform: translate3d(0, 0, 0); } }
+@keyframes bounceInRight { from, 60%, 75%, 90%, to { animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); } from { opacity: 0; transform: translate3d(3000px, 0, 0) scaleX(3); } 60% { opacity: 1; transform: translate3d(-25px, 0, 0) scaleX(1); } 75% { transform: translate3d(10px, 0, 0) scaleX(0.98); } 90% { transform: translate3d(-5px, 0, 0) scaleX(0.995); } to { transform: translate3d(0, 0, 0); } }
+@keyframes bounceInUp { from, 60%, 75%, 90%, to { animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); } from { opacity: 0; transform: translate3d(0, 3000px, 0) scaleY(5); } 60% { opacity: 1; transform: translate3d(0, -20px, 0) scaleY(0.9); } 75% { transform: translate3d(0, 10px, 0) scaleY(0.95); } 90% { transform: translate3d(0, -5px, 0) scaleY(0.985); } to { transform: translate3d(0, 0, 0); } }
+
+/* Scroll Animation Classes */
+.animate-on-scroll { opacity: 0; }
+.animate-on-scroll.animated { opacity: 1; }
+.animate-fade-up.animated { animation: fadeInUp 0.8s ease-out forwards; }
+.animate-fade-left.animated { animation: fadeInLeft 0.8s ease-out forwards; }
+.animate-fade-right.animated { animation: fadeInRight 0.8s ease-out forwards; }
+.animate-scale.animated { animation: scaleIn 0.6s ease-out forwards; }
+.animate-bounce.animated { animation: bounceIn 0.8s ease-out forwards; }
+.animate-flip.animated { animation: flipIn 0.8s ease-out forwards; }
+.animate-elastic.animated { animation: elastic 0.8s ease-out forwards; }
+.animate-slide-up.animated { animation: slideInBottom 0.8s ease-out forwards; }
+.animate-zoom-in.animated { animation: zoomIn 0.6s ease-out forwards; }
+.animate-jack.animated { animation: jackInTheBox 0.8s ease-out forwards; }
+.animate-roll.animated { animation: rollIn 0.8s ease-out forwards; }
+.animate-light-speed.animated { animation: lightSpeedIn 0.8s ease-out forwards; }
+.animate-rubber.animated { animation: rubberBand 0.8s ease-out forwards; }
+.animate-tada.animated { animation: tada 0.8s ease-out forwards; }
+.animate-jello.animated { animation: jello 0.8s ease-out forwards; }
+.animate-wobble.animated { animation: wobble 0.8s ease-out forwards; }
+.animate-swing.animated { animation: swing 0.8s ease-out forwards; }
+.animate-heartbeat.animated { animation: heartbeat 0.8s ease-out forwards; }
+.animate-flip-x.animated { animation: flipInX 0.8s ease-out forwards; }
+.animate-flip-y.animated { animation: flipInY 0.8s ease-out forwards; }
+.animate-rotate.animated { animation: rotateIn 0.8s ease-out forwards; }
+.animate-bounce-down.animated { animation: bounceInDown 0.8s ease-out forwards; }
+.animate-bounce-left.animated { animation: bounceInLeft 0.8s ease-out forwards; }
+.animate-bounce-right.animated { animation: bounceInRight 0.8s ease-out forwards; }
+.animate-bounce-up.animated { animation: bounceInUp 0.8s ease-out forwards; }
+.animate-zoom-down.animated { animation: zoomInDown 0.8s ease-out forwards; }
+.animate-zoom-left.animated { animation: zoomInLeft 0.8s ease-out forwards; }
+.animate-zoom-right.animated { animation: zoomInRight 0.8s ease-out forwards; }
+.animate-zoom-up.animated { animation: zoomInUp 0.8s ease-out forwards; }
+.animate-slide-down.animated { animation: slideInDown 0.8s ease-out forwards; }
+.animate-slide-left.animated { animation: slideInLeft 0.8s ease-out forwards; }
+.animate-slide-right.animated { animation: slideInRight 0.8s ease-out forwards; }
+.animate-fade-down.animated { animation: fadeInDown 0.8s ease-out forwards; }
+.animate-fade-down-big.animated { animation: fadeInDownBig 0.8s ease-out forwards; }
+.animate-fade-left-big.animated { animation: fadeInLeftBig 0.8s ease-out forwards; }
+.animate-fade-right-big.animated { animation: fadeInRightBig 0.8s ease-out forwards; }
+.animate-fade-up-big.animated { animation: fadeInUpBig 0.8s ease-out forwards; }
+.animate-rotate-down-left.animated { animation: rotateInDownLeft 0.8s ease-out forwards; }
+.animate-rotate-down-right.animated { animation: rotateInDownRight 0.8s ease-out forwards; }
+.animate-rotate-up-left.animated { animation: rotateInUpLeft 0.8s ease-out forwards; }
+.animate-rotate-up-right.animated { animation: rotateInUpRight 0.8s ease-out forwards; }
+
+/* Stagger delays */
+.delay-1 { animation-delay: 0.1s !important; }
+.delay-2 { animation-delay: 0.2s !important; }
+.delay-3 { animation-delay: 0.3s !important; }
+.delay-4 { animation-delay: 0.4s !important; }
+.delay-5 { animation-delay: 0.5s !important; }
+.delay-6 { animation-delay: 0.6s !important; }
+.delay-7 { animation-delay: 0.7s !important; }
+.delay-8 { animation-delay: 0.8s !important; }
+.delay-9 { animation-delay: 0.9s !important; }
+.delay-10 { animation-delay: 1.0s !important; }
+
+/* Header */
+.header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 0 5%; display: flex; align-items: center; justify-content: space-between; height: 80px; animation: slideDown 0.6s ease-out; }
+.logo { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 24px; color: #1a1a2e; text-decoration: none; transition: all 0.3s; }
+.logo:hover { transform: scale(1.05); }
+.logo-icon { width: 40px; height: 40px; position: relative; transition: transform 0.5s; }
+.logo:hover .logo-icon { animation: swing 0.8s ease; }
+.logo-icon img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+.nav-links li { animation: fadeIn 0.5s ease-out backwards; }
+.nav-links li:nth-child(1) { animation-delay: 0.1s; }
+.nav-links li:nth-child(2) { animation-delay: 0.2s; }
+.nav-links li:nth-child(3) { animation-delay: 0.3s; }
+.nav-links li:nth-child(4) { animation-delay: 0.4s; }
+.nav-links li:nth-child(5) { animation-delay: 0.5s; }
+.nav-links li:nth-child(6) { animation-delay: 0.6s; }
+.nav-links li:nth-child(7) { animation-delay: 0.7s; }
+.nav-links a { text-decoration: none; color: #333; font-weight: 500; font-size: 15px; transition: all 0.3s; display: flex; align-items: center; gap: 4px; position: relative; padding: 5px 0; }
+.nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #e63946; transition: width 0.3s ease; }
+.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover { color: #e63946; transform: translateY(-2px); }
+.nav-links a.active { color: #e63946; }
+.nav-links a.active::after { width: 100%; }
+.nav-links a .plus { font-size: 12px; color: #999; transition: transform 0.3s; }
+.nav-links a:hover .plus { transform: rotate(90deg); color: #e63946; }
+.header-right { display: flex; align-items: center; gap: 20px; }
+.search-btn { background: none; border: none; font-size: 16px; cursor: pointer; color: #333; display: flex; align-items: center; gap: 8px; font-weight: 500; transition: all 0.3s; padding: 8px 12px; border-radius: 8px; }
+.search-btn:hover { background: #f0f0f0; color: #e63946; transform: scale(1.05); }
+.open-account { background: linear-gradient(135deg, #1a1a4e, #2d2d5a); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.3s; position: relative; overflow: hidden; border: none; cursor: pointer; display: inline-block; }
+.open-account::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s; }
+.open-account:hover::before { left: 100%; }
+.open-account:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(26,26,78,0.3); animation: glow 2s infinite; }
+.atm-link { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #333; font-weight: 500; font-size: 14px; transition: all 0.3s; }
+.atm-link i { color: #e63946; transition: transform 0.3s; }
+.atm-link:hover { color: #e63946; }
+.atm-link:hover i { animation: bounceIn 0.5s; }
+.mobile-menu-btn { display: none; background: none; border: none; font-size: 24px; cursor: pointer; transition: transform 0.3s; }
+.mobile-menu-btn:hover { transform: rotate(90deg); }
+
+/* Page Hero */
+.page-hero { min-height: 60vh; padding: 140px 5% 80px; background: linear-gradient(135deg, #1a1a4e 0%, #2d2d5a 50%, #e63946 100%); display: flex; align-items: center; position: relative; overflow: hidden; }
+.page-hero::before { content: ''; position: absolute; top: -20%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 10s ease-in-out infinite; }
+.page-hero::after { content: ''; position: absolute; bottom: -30%; left: -20%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(230,57,70,0.1) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 15s ease-in-out infinite reverse; }
+.page-hero-container { max-width: 1400px; margin: 0 auto; width: 100%; position: relative; z-index: 2; text-align: center; }
+.page-hero-label { color: #ff6b6b; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 10px; animation: fadeInUp 0.6s ease-out; }
+.page-hero-label::before { content: '\f09d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; animation: float 3s ease-in-out infinite; }
+.page-hero-title { font-size: 56px; font-weight: 800; color: white; margin-bottom: 24px; line-height: 1.2; animation: fadeInUp 0.8s ease-out 0.2s both; }
+.page-hero-title .highlight { position: relative; display: inline-block; }
+.page-hero-title .highlight::after { content: ''; position: absolute; bottom: 5px; left: 0; right: 0; height: 12px; background: rgba(230,57,70,0.3); z-index: -1; border-radius: 4px; animation: drawLine 1s ease-out 0.8s both; transform-origin: left; }
+.page-hero-desc { font-size: 18px; color: rgba(255,255,255,0.8); line-height: 1.7; max-width: 600px; margin: 0 auto 40px; animation: fadeInUp 0.8s ease-out 0.4s both; }
+.page-hero-breadcrumb { display: flex; align-items: center; justify-content: center; gap: 16px; animation: fadeInUp 0.8s ease-out 0.6s both; }
+.page-hero-breadcrumb a { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 500; font-size: 14px; transition: all 0.3s; }
+.page-hero-breadcrumb a:hover { color: white; transform: translateY(-2px); }
+.page-hero-breadcrumb i { color: #e63946; font-size: 12px; animation: float 2s ease-in-out infinite; }
+.page-hero-breadcrumb span { color: white; font-weight: 600; font-size: 14px; }
+
+/* Card Types Section */
+.card-types { padding: 100px 5%; background: white; position: relative; overflow: hidden; }
+.card-types::before { content: ''; position: absolute; top: -30%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(230,57,70,0.03) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 20s ease-in-out infinite; }
+.section-header { text-align: center; margin-bottom: 60px; position: relative; z-index: 2; }
+.section-label { color: #e63946; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 16px; display: inline-flex; align-items: center; gap: 8px; }
+.section-label::before { content: '\f09d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; animation: rotateIn 2s ease-in-out infinite; }
+.section-title { font-size: 42px; font-weight: 800; color: #1a1a2e; margin-bottom: 16px; position: relative; display: inline-block; }
+.section-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background: linear-gradient(90deg, #e63946, #1a1a4e); border-radius: 2px; animation: drawLine 1s ease-out 0.5s both; }
+.section-desc { font-size: 16px; color: #666; line-height: 1.7; max-width: 600px; margin: 30px auto 0; }
+
+.card-types-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; position: relative; z-index: 2; }
+.card-type-item { background: white; border-radius: 24px; padding: 40px; border: 1px solid #eee; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+.card-type-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #e63946, #1a1a4e); transform: scaleX(0); transition: transform 0.4s; }
+.card-type-item:hover { transform: translateY(-15px) scale(1.02); box-shadow: 0 30px 60px rgba(0,0,0,0.12); border-color: transparent; }
+.card-type-item:hover::before { transform: scaleX(1); }
+.card-type-item:hover .card-type-icon { animation: tada 0.8s ease; transform: scale(1.1); }
+.card-type-item:hover .card-type-img { transform: scale(1.1) rotateY(10deg); }
+.card-type-icon { width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 24px; transition: all 0.4s; }
+.card-type-icon.gold { background: linear-gradient(135deg, #ffd700, #ffaa00); color: white; }
+.card-type-icon.platinum { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: white; }
+.card-type-icon.black { background: linear-gradient(135deg, #1a1a1e, #333); color: white; }
+.card-type-img { width: 100%; height: 200px; border-radius: 16px; margin-bottom: 24px; overflow: hidden; position: relative; transition: all 0.4s; }
+.card-type-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+.card-type-item:hover .card-type-img img { transform: scale(1.2); }
+.card-type-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.3), transparent); transition: all 0.3s; }
+.card-type-item:hover .card-type-img-overlay { background: linear-gradient(to top, rgba(230,57,70,0.2), transparent); }
+.card-type-item h3 { font-size: 24px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; transition: color 0.3s; }
+.card-type-item:hover h3 { color: #e63946; }
+.card-type-item p { font-size: 15px; color: #666; line-height: 1.7; margin-bottom: 24px; }
+.card-type-features { list-style: none; margin-bottom: 24px; }
+.card-type-features li { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-size: 14px; color: #555; transition: all 0.3s; }
+.card-type-features li:hover { transform: translateX(5px); color: #e63946; }
+.card-type-features li i { color: #e63946; font-size: 12px; transition: transform 0.3s; }
+.card-type-features li:hover i { transform: scale(1.3); }
+.card-type-btn { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #1a1a4e, #2d2d5a); color: white; padding: 14px 28px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.3s; position: relative; overflow: hidden; }
+.card-type-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s; }
+.card-type-btn:hover::before { left: 100%; }
+.card-type-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(26,26,78,0.3); animation: glow 2s infinite; }
+.card-type-btn i { transition: transform 0.3s; }
+.card-type-btn:hover i { transform: translateX(5px); }
+
+/* Card Benefits Section */
+.card-benefits { padding: 100px 5%; background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 50%, #fff0f3 100%); position: relative; overflow: hidden; }
+.card-benefits::before { content: ''; position: absolute; top: -20%; left: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(26,26,78,0.03) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 18s ease-in-out infinite; }
+.card-benefits::after { content: ''; position: absolute; bottom: -30%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(230,57,70,0.03) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 22s ease-in-out infinite reverse; }
+.card-benefits-container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; }
+.card-benefits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.card-benefits-left h2 { font-size: 42px; font-weight: 800; color: #1a1a2e; margin-bottom: 20px; line-height: 1.2; }
+.card-benefits-left > p { font-size: 16px; color: #666; line-height: 1.7; margin-bottom: 40px; }
+.benefit-list { display: flex; flex-direction: column; gap: 24px; }
+.benefit-item { display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: white; border-radius: 16px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+.benefit-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, #e63946, #1a1a4e); transform: scaleY(0); transition: transform 0.4s; }
+.benefit-item:hover { transform: translateX(10px) scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+.benefit-item:hover::before { transform: scaleY(1); }
+.benefit-item:hover .benefit-icon { animation: rotateIn 0.5s; transform: scale(1.1); }
+.benefit-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; transition: all 0.3s; }
+.benefit-icon.red { background: #fff0f3; color: #e63946; }
+.benefit-icon.blue { background: #f0f4ff; color: #1a1a4e; }
+.benefit-icon.green { background: #e8f5e9; color: #2e7d32; }
+.benefit-icon.orange { background: #fff8e1; color: #ff8f00; }
+.benefit-content h4 { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; transition: color 0.3s; }
+.benefit-item:hover .benefit-content h4 { color: #e63946; }
+.benefit-content p { font-size: 14px; color: #666; line-height: 1.6; }
+
+.card-benefits-right { position: relative; height: 500px; }
+.benefit-card-float { position: absolute; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.benefit-card-float:hover { transform: translateY(-15px) rotate(0deg) scale(1.08) !important; box-shadow: 0 30px 70px rgba(0,0,0,0.25); z-index: 10; }
+.bcard-1 { width: 300px; height: 190px; background: linear-gradient(135deg, #1a1a4e, #4a4a8a); top: 30px; left: 30px; transform: rotate(-8deg); z-index: 2; animation: floatSlow 5s ease-in-out infinite; }
+.bcard-2 { width: 280px; height: 180px; background: linear-gradient(135deg, #e63946, #ff6b6b); top: 130px; left: 130px; transform: rotate(5deg); z-index: 1; animation: floatSlow2 6s ease-in-out infinite 1s; }
+.bcard-3 { width: 260px; height: 170px; background: linear-gradient(135deg, #2d2d5a, #6b6b9a); top: 230px; left: 60px; transform: rotate(-3deg); z-index: 3; animation: floatSlow 7s ease-in-out infinite 0.5s; }
+
+/* Card Comparison Section */
+.card-comparison { padding: 100px 5%; background: white; position: relative; overflow: hidden; }
+.card-comparison::before { content: ''; position: absolute; top: -30%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(230,57,70,0.03) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 20s ease-in-out infinite; }
+.comparison-table-container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; overflow-x: auto; }
+.comparison-table { width: 100%; border-collapse: collapse; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
+.comparison-table th { background: linear-gradient(135deg, #1a1a4e, #2d2d5a); color: white; padding: 24px; font-weight: 600; font-size: 16px; text-align: left; }
+.comparison-table th:first-child { border-radius: 20px 0 0 0; }
+.comparison-table th:last-child { border-radius: 0 20px 0 0; }
+.comparison-table td { padding: 20px 24px; border-bottom: 1px solid #eee; font-size: 15px; color: #555; transition: all 0.3s; }
+.comparison-table tr:hover td { background: #f8f9fa; transform: scale(1.01); }
+.comparison-table tr:hover td:first-child { color: #e63946; font-weight: 600; }
+.comparison-table .feature-name { font-weight: 600; color: #1a1a2e; }
+.comparison-table .check { color: #2e7d32; font-size: 18px; animation: bounceIn 0.5s; }
+.comparison-table .cross { color: #e63946; font-size: 18px; }
+.comparison-table .highlight-row { background: linear-gradient(90deg, rgba(230,57,70,0.05), transparent); }
+.comparison-table .highlight-row td { border-left: 3px solid #e63946; }
+.comparison-badge { display: inline-block; background: linear-gradient(135deg, #e63946, #ff6b6b); color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-left: 8px; animation: pulse 2s infinite; }
+
+/* Card Features Section */
+.card-features { padding: 100px 5%; background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%); position: relative; overflow: hidden; }
+.card-features::after { content: ''; position: absolute; bottom: -30%; left: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(230,57,70,0.03) 0%, transparent 70%); border-radius: 50%; animation: morphBlob 18s ease-in-out infinite; }
+.card-features-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; position: relative; z-index: 2; }
+.card-feature-box { background: white; padding: 40px 30px; border-radius: 20px; border: 1px solid #eee; text-align: center; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+.card-feature-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #e63946, #1a1a4e); transform: scaleX(0); transition: transform 0.4s; }
+.card-feature-box:hover { transform: translateY(-15px) scale(1.02); box-shadow: 0 25px 50px rgba(0,0,0,0.12); border-color: transparent; }
+.card-feature-box:hover::before { transform: scaleX(1); }
+.card-feature-box:hover .card-feature-icon { animation: tada 0.8s ease; transform: scale(1.1) rotateY(360deg); }
+.card-feature-icon { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 20px; transition: all 0.6s; }
+.card-feature-icon.red { background: linear-gradient(135deg, #fff0f3, #ffe0e6); color: #e63946; }
+.card-feature-icon.blue { background: linear-gradient(135deg, #f0f4ff, #e0e8ff); color: #1a1a4e; }
+.card-feature-icon.green { background: linear-gradient(135deg, #e8f5e9, #d0f0d6); color: #2e7d32; }
+.card-feature-icon.orange { background: linear-gradient(135deg, #fff8e1, #ffecb3); color: #ff8f00; }
+.card-feature-box h3 { font-size: 20px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; transition: color 0.3s; }
+.card-feature-box:hover h3 { color: #e63946; }
+.card-feature-box p { font-size: 14px; color: #666; line-height: 1.7; }
+
+/* Card CTA Section */
+.card-cta { padding: 100px 5%; background: linear-gradient(135deg, #1a1a4e 0%, #2d2d5a 100%); position: relative; overflow: hidden; }
+.card-cta::before { content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%); animation: spinSlow 25s linear infinite; }
+.card-cta-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 2; }
+.card-cta-left h2 { font-size: 42px; font-weight: 800; color: white; margin-bottom: 20px; line-height: 1.2; }
+.card-cta-left p { font-size: 16px; color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 40px; }
+.card-cta-btns { display: flex; gap: 20px; flex-wrap: wrap; }
+.card-cta-btn-primary { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #e63946, #ff6b6b); color: white; padding: 16px 32px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 16px; transition: all 0.3s; position: relative; overflow: hidden; animation: pulse 2s ease-in-out infinite; }
+.card-cta-btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s; }
+.card-cta-btn-primary:hover::before { left: 100%; }
+.card-cta-btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 40px rgba(230,57,70,0.4); animation: none; }
+.card-cta-btn-primary i { transition: transform 0.3s; }
+.card-cta-btn-primary:hover i { transform: translateX(5px); }
+.card-cta-btn-secondary { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: white; padding: 16px 32px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 16px; border: 2px solid rgba(255,255,255,0.3); transition: all 0.3s; }
+.card-cta-btn-secondary:hover { background: white; color: #1a1a4e; transform: translateY(-3px); border-color: white; }
+.card-cta-btn-secondary i { transition: transform 0.3s; }
+.card-cta-btn-secondary:hover i { transform: translateX(5px); }
+
+.card-cta-right { position: relative; height: 400px; }
+.cta-card-float { position: absolute; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.cta-card-float:hover { transform: translateY(-15px) rotate(0deg) scale(1.08) !important; box-shadow: 0 30px 70px rgba(0,0,0,0.3); z-index: 10; }
+.ccard-1 { width: 320px; height: 200px; background: linear-gradient(135deg, #e63946, #ff6b6b); top: 30px; right: 50px; transform: rotate(-5deg); z-index: 2; animation: floatSlow 5s ease-in-out infinite; }
+.ccard-2 { width: 300px; height: 190px; background: linear-gradient(135deg, #ff6b6b, #ff8f8f); top: 120px; right: 100px; transform: rotate(8deg); z-index: 1; animation: floatSlow2 6s ease-in-out infinite 1s; }
+
+/* Footer */
+.footer { background: #1a1a1e; color: white; padding: 80px 5% 40px; position: relative; overflow: hidden; }
+.footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #e63946, #1a1a4e, #6b8cff, #e63946); background-size: 300% 100%; animation: gradientShift 5s ease infinite; }
+.footer-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 60px; position: relative; z-index: 2; }
+.footer-brand .logo { color: white; margin-bottom: 24px; transition: all 0.3s; }
+.footer-brand .logo:hover { transform: scale(1.05); }
+.footer-brand .logo-icon { width: 45px; height: 45px; transition: transform 0.5s; }
+.footer-brand .logo:hover .logo-icon { animation: swing 0.8s ease; }
+.footer-brand p { font-size: 14px; color: #888; margin-bottom: 8px; transition: color 0.3s; }
+.footer-brand:hover p { color: #aaa; }
+.footer-brand .phone { font-size: 24px; font-weight: 700; color: white; margin-bottom: 24px; display: block; text-decoration: none; transition: all 0.3s; }
+.footer-brand .phone:hover { color: #e63946; transform: scale(1.05); animation: heartbeat 1.5s infinite; }
+.footer-social { display: flex; gap: 12px; }
+.footer-social a { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: all 0.4s; font-size: 16px; position: relative; overflow: hidden; }
+.footer-social a::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: #e63946; border-radius: 50%; transition: all 0.4s; transform: translate(-50%, -50%); }
+.footer-social a:hover::before { width: 100%; height: 100%; }
+.footer-social a:hover { transform: translateY(-5px) scale(1.1); color: white; }
+.footer-social a i { position: relative; z-index: 2; }
+.footer-column h3 { font-size: 18px; font-weight: 700; margin-bottom: 24px; position: relative; display: inline-block; }
+.footer-column h3::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 30px; height: 3px; background: #e63946; border-radius: 2px; transition: width 0.3s; }
+.footer-column:hover h3::after { width: 100%; }
+.footer-column ul { list-style: none; }
+.footer-column ul li { margin-bottom: 14px; }
+.footer-column ul li a { color: #888; text-decoration: none; font-size: 15px; transition: all 0.3s; display: flex; align-items: center; gap: 10px; position: relative; padding-left: 0; }
+.footer-column ul li a::before { content: '\f054'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 10px; color: #e63946; transition: all 0.3s; }
+.footer-column ul li a:hover { color: white; padding-left: 10px; }
+.footer-column ul li a:hover::before { transform: translateX(5px); }
+
+.footer-bottom { max-width: 1400px; margin: 60px auto 0; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; position: relative; z-index: 2; }
+.footer-bottom p { font-size: 14px; color: #888; }
+.footer-bottom a { color: #e63946; text-decoration: none; font-weight: 600; transition: all 0.3s; }
+.footer-bottom a:hover { color: white; }
+.footer-bottom-links { display: flex; gap: 24px; }
+.footer-bottom-links a { color: #888; text-decoration: none; font-size: 14px; transition: all 0.3s; position: relative; }
+.footer-bottom-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #e63946; transition: width 0.3s; }
+.footer-bottom-links a:hover { color: white; }
+.footer-bottom-links a:hover::after { width: 100%; }
+
+/* Back to Top */
+.back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: linear-gradient(135deg, #6b8cff, #5470e6); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 5px 20px rgba(107,140,255,0.4); transition: all 0.4s; z-index: 999; border: none; font-size: 18px; opacity: 0; pointer-events: none; transform: translateY(20px); }
+.back-to-top.visible { opacity: 1; pointer-events: all; transform: translateY(0); }
+.back-to-top:hover { background: linear-gradient(135deg, #5470e6, #6b8cff); transform: translateY(-5px) scale(1.1); box-shadow: 0 10px 30px rgba(107,140,255,0.6); animation: pulse 1.5s infinite; }
+.back-to-top:hover i { animation: bounceIn 0.5s; }
+
+/* Mobile Menu */
+.mobile-menu { position: fixed; top: 0; right: -100%; width: 80%; max-width: 400px; height: 100vh; background: white; z-index: 1001; padding: 100px 40px 40px; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
+.mobile-menu.active { right: 0; }
+.mobile-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.mobile-menu-overlay.active { opacity: 1; pointer-events: all; }
+.mobile-menu-close { position: absolute; top: 30px; right: 30px; background: none; border: none; font-size: 24px; cursor: pointer; transition: all 0.3s; }
+.mobile-menu-close:hover { transform: rotate(90deg) scale(1.2); color: #e63946; }
+.mobile-menu ul { list-style: none; }
+.mobile-menu ul li { margin-bottom: 24px; opacity: 0; transform: translateX(30px); transition: all 0.3s; }
+.mobile-menu.active ul li { opacity: 1; transform: translateX(0); }
+.mobile-menu.active ul li:nth-child(1) { transition-delay: 0.1s; }
+.mobile-menu.active ul li:nth-child(2) { transition-delay: 0.15s; }
+.mobile-menu.active ul li:nth-child(3) { transition-delay: 0.2s; }
+.mobile-menu.active ul li:nth-child(4) { transition-delay: 0.25s; }
+.mobile-menu.active ul li:nth-child(5) { transition-delay: 0.3s; }
+.mobile-menu.active ul li:nth-child(6) { transition-delay: 0.35s; }
+.mobile-menu.active ul li:nth-child(7) { transition-delay: 0.4s; }
+.mobile-menu ul li a { text-decoration: none; color: #1a1a2e; font-size: 18px; font-weight: 600; transition: all 0.3s; display: inline-block; }
+.mobile-menu ul li a:hover { color: #e63946; transform: translateX(10px); }
+.mobile-menu .open-account { display: inline-block; margin-top: 20px; opacity: 0; transform: translateY(20px); transition: all 0.3s 0.5s; }
+.mobile-menu.active .open-account { opacity: 1; transform: translateY(0); }
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .card-types-grid { grid-template-columns: repeat(2, 1fr); }
+    .card-features-grid { grid-template-columns: repeat(2, 1fr); }
+    .card-cta-container { grid-template-columns: 1fr; }
+    .card-cta-right { display: none; }
+}
+
+@media (max-width: 992px) {
+    .nav-links { display: none; }
+    .header-right .search-btn, .header-right .atm-link { display: none; }
+    .mobile-menu-btn { display: block; }
+    .page-hero-title { font-size: 42px; }
+    .card-types-grid { grid-template-columns: 1fr; }
+    .card-benefits-grid { grid-template-columns: 1fr; }
+    .card-benefits-right { display: none; }
+    .card-features-grid { grid-template-columns: 1fr; }
+    .card-cta-container { grid-template-columns: 1fr; text-align: center; }
+    .card-cta-btns { justify-content: center; }
+    .footer-container { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+    .page-hero { padding: 120px 5% 60px; min-height: 50vh; }
+    .page-hero-title { font-size: 32px; }
+    .page-hero-desc { font-size: 16px; }
+    .section-title { font-size: 32px; }
+    .card-type-item { padding: 30px 20px; }
+    .card-benefits-left h2 { font-size: 32px; }
+    .benefit-item { flex-direction: column; text-align: center; }
+    .benefit-icon { margin: 0 auto; }
+    .card-cta-left h2 { font-size: 32px; }
+    .card-cta-btns { flex-direction: column; }
+    .card-cta-btn-primary, .card-cta-btn-secondary { justify-content: center; }
+    .comparison-table { font-size: 14px; }
+    .comparison-table th, .comparison-table td { padding: 16px; }
+    .footer-container { grid-template-columns: 1fr; gap: 40px; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 480px) {
+    .page-hero-title { font-size: 28px; }
+    .page-hero-breadcrumb { flex-wrap: wrap; }
+    .section-title { font-size: 28px; }
+    .card-type-item h3 { font-size: 20px; }
+    .card-feature-box { padding: 30px 20px; }
+    .card-cta-left h2 { font-size: 28px; }
+    .comparison-table th, .comparison-table td { padding: 12px; font-size: 13px; }
+}
+
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <a href="index.html" class="logo">
+        <div class="logo-icon">
+            <img src="logo.webp" alt="Stackly logo">
+        </div>
+        Stackly
+    </a>
+
+    <ul class="nav-links">
+        <li><a href="index.html">Home <span class="plus">+</span></a></li>
+        <li><a href="card.html" class="active">Card Overview <span class="plus">+</span></a></li>
+        <li><a href="mortage.html">Mortgage <span class="plus">+</span></a></li>
+        <li><a href="personal.html">Personal Loan <span class="plus">+</span></a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <div class="header-right">
+        <a href="404.html" class="search-btn"><i class="fas fa-search"></i> Search</a>
+        <a href="404.html" class="open-account">Open An Account</a>
+        <a href="404.html" class="atm-link"><i class="fas fa-map-marker-alt"></i> ATM / Branch</a>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+    </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
+<div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" onclick="toggleMobileMenu()"><i class="fas fa-times"></i></button>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="card.html">Card Overview</a></li>
+        <li><a href="mortage.html">Mortgage</a></li>
+        <li><a href="personal.html">Personal Loan</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="404.html" class="open-account">Open An Account</a>
+</div>
+
+<!-- Page Hero Section -->
+<section class="page-hero">
+    <div class="page-hero-container">
+        <div class="page-hero-label">Our Cards</div>
+        <h1 class="page-hero-title">Choose Your Perfect <span class="highlight">Credit Card</span></h1>
+        <p class="page-hero-desc">Explore our range of credit cards designed to meet your financial needs. From rewards to low interest rates, we have the perfect card for you.</p>
+        <div class="page-hero-breadcrumb">
+            <a href="index.html">Home</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>Card Overview</span>
+        </div>
+    </div>
+</section>
+
+<!-- Card Types Section -->
+<section class="card-types">
+    <div class="section-header">
+        <div class="section-label">Card Types</div>
+        <h2 class="section-title">Our Card Collection</h2>
+        <p class="section-desc">Choose from our range of premium credit cards, each designed to offer unique benefits and rewards tailored to your lifestyle.</p>
+    </div>
+    <div class="card-types-grid">
+        <div class="card-type-item animate-on-scroll animate-fade-up delay-1">
+            <div class="card-type-icon gold"><i class="fas fa-crown"></i></div>
+            <div class="card-type-img">
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop&fm=webp" alt="Gold Card">
+                <div class="card-type-img-overlay"></div>
+            </div>
+            <h3>Gold Card</h3>
+            <p>Perfect for everyday purchases with premium rewards and cashback benefits.</p>
+            <ul class="card-type-features">
+                <li><i class="fas fa-check-circle"></i> 2% Cashback on all purchases</li>
+                <li><i class="fas fa-check-circle"></i> Travel insurance included</li>
+                <li><i class="fas fa-check-circle"></i> No annual fee first year</li>
+                <li><i class="fas fa-check-circle"></i> 24/7 concierge service</li>
+            </ul>
+            <a href="404.html" class="card-type-btn">Apply Now <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="card-type-item animate-on-scroll animate-fade-up delay-2">
+            <div class="card-type-icon platinum"><i class="fas fa-gem"></i></div>
+            <div class="card-type-img">
+                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&h=300&fit=crop&fm=webp" alt="Platinum Card">
+                <div class="card-type-img-overlay"></div>
+            </div>
+            <h3>Platinum Card</h3>
+            <p>Enhanced rewards program with exclusive access to premium services and events.</p>
+            <ul class="card-type-features">
+                <li><i class="fas fa-check-circle"></i> 3% Cashback on all purchases</li>
+                <li><i class="fas fa-check-circle"></i> Airport lounge access</li>
+                <li><i class="fas fa-check-circle"></i> Premium travel insurance</li>
+                <li><i class="fas fa-check-circle"></i> Priority customer support</li>
+            </ul>
+            <a href="404.html" class="card-type-btn">Apply Now <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="card-type-item animate-on-scroll animate-fade-up delay-3">
+            <div class="card-type-icon black"><i class="fas fa-star"></i></div>
+            <div class="card-type-img">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=300&fit=crop&fm=webp" alt="Black Card">
+                <div class="card-type-img-overlay"></div>
+            </div>
+            <h3>Black Card</h3>
+            <p>The ultimate premium card with unlimited benefits and exclusive privileges.</p>
+            <ul class="card-type-features">
+                <li><i class="fas fa-check-circle"></i> 5% Cashback on all purchases</li>
+                <li><i class="fas fa-check-circle"></i> Unlimited lounge access</li>
+                <li><i class="fas fa-check-circle"></i> Personal concierge 24/7</li>
+                <li><i class="fas fa-check-circle"></i> Exclusive event invitations</li>
+            </ul>
+            <a href="404.html" class="card-type-btn">Apply Now <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- Card Benefits Section -->
+<section class="card-benefits">
+    <div class="card-benefits-container">
+        <div class="card-benefits-grid">
+            <div class="card-benefits-left animate-on-scroll animate-fade-left">
+                <h2>Why Choose Our Cards</h2>
+                <p>Our credit cards come with a range of benefits designed to make your financial life easier and more rewarding.</p>
+                <div class="benefit-list">
+                    <div class="benefit-item">
+                        <div class="benefit-icon red"><i class="fas fa-shield-alt"></i></div>
+                        <div class="benefit-content">
+                            <h4>Fraud Protection</h4>
+                            <p>Advanced security features to protect your transactions and personal information.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon blue"><i class="fas fa-percentage"></i></div>
+                        <div class="benefit-content">
+                            <h4>Low Interest Rates</h4>
+                            <p>Competitive interest rates starting from just 12.99% APR on purchases.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon green"><i class="fas fa-gift"></i></div>
+                        <div class="benefit-content">
+                            <h4>Rewards Program</h4>
+                            <p>Earn points on every purchase and redeem for travel, merchandise, or cashback.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon orange"><i class="fas fa-mobile-alt"></i></div>
+                        <div class="benefit-content">
+                            <h4>Mobile Banking</h4>
+                            <p>Manage your card anytime, anywhere with our award-winning mobile app.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-benefits-right animate-on-scroll animate-fade-right">
+                <div class="benefit-card-float bcard-1">
+                    <div class="card-content">
+                        <div class="card-chip"></div>
+                        <div class="card-number">1234 5678 9012 3456</div>
+                        <div class="card-bottom">
+                            <div class="card-holder">Card Holder</div>
+                            <div class="card-logo">VISA</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="benefit-card-float bcard-2">
+                    <div class="card-content">
+                        <div class="card-chip"></div>
+                        <div class="card-number">5678 9012 3456 7890</div>
+                        <div class="card-bottom">
+                            <div class="card-holder">Card Holder</div>
+                            <div class="card-logo">VISA</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="benefit-card-float bcard-3">
+                    <div class="card-content">
+                        <div class="card-chip"></div>
+                        <div class="card-number">9012 3456 7890 1234</div>
+                        <div class="card-bottom">
+                            <div class="card-holder">Card Holder</div>
+                            <div class="card-logo">VISA</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Card Comparison Section -->
+<section class="card-comparison">
+    <div class="section-header">
+        <div class="section-label">Compare</div>
+        <h2 class="section-title">Card Comparison</h2>
+        <p class="section-desc">Compare our card features side by side to find the perfect match for your needs.</p>
+    </div>
+    <div class="comparison-table-container">
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Features</th>
+                    <th>Gold Card</th>
+                    <th>Platinum Card <span class="comparison-badge">Popular</span></th>
+                    <th>Black Card</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="feature-name">Annual Fee</td>
+                    <td>$0 first year, then $99</td>
+                    <td>$199</td>
+                    <td>$499</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td class="feature-name">Cashback Rate</td>
+                    <td>2% on all purchases</td>
+                    <td>3% on all purchases</td>
+                    <td>5% on all purchases</td>
+                </tr>
+                <tr>
+                    <td class="feature-name">Welcome Bonus</td>
+                    <td>10,000 points</td>
+                    <td>25,000 points</td>
+                    <td>50,000 points</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td class="feature-name">Airport Lounge Access</td>
+                    <td><i class="fas fa-times cross"></i></td>
+                    <td><i class="fas fa-check check"></i> 4 visits/year</td>
+                    <td><i class="fas fa-check check"></i> Unlimited</td>
+                </tr>
+                <tr>
+                    <td class="feature-name">Travel Insurance</td>
+                    <td><i class="fas fa-check check"></i> Basic</td>
+                    <td><i class="fas fa-check check"></i> Premium</td>
+                    <td><i class="fas fa-check check"></i> Comprehensive</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td class="feature-name">Concierge Service</td>
+                    <td><i class="fas fa-times cross"></i></td>
+                    <td><i class="fas fa-check check"></i> 24/7</td>
+                    <td><i class="fas fa-check check"></i> Personal Assistant</td>
+                </tr>
+                <tr>
+                    <td class="feature-name">Purchase Protection</td>
+                    <td><i class="fas fa-check check"></i> 90 days</td>
+                    <td><i class="fas fa-check check"></i> 120 days</td>
+                    <td><i class="fas fa-check check"></i> 180 days</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td class="feature-name">Foreign Transaction Fee</td>
+                    <td>2.5%</td>
+                    <td>0%</td>
+                    <td>0%</td>
+                </tr>
+                <tr>
+                    <td class="feature-name">Credit Limit</td>
+                    <td>Up to $10,000</td>
+                    <td>Up to $25,000</td>
+                    <td>Up to $100,000</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td class="feature-name">APR</td>
+                    <td>15.99% - 22.99%</td>
+                    <td>14.99% - 21.99%</td>
+                    <td>12.99% - 19.99%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Card Features Section -->
+<section class="card-features">
+    <div class="section-header">
+        <div class="section-label">Features</div>
+        <h2 class="section-title">Card Features</h2>
+        <p class="section-desc">Discover the powerful features that come with every Stackly credit card.</p>
+    </div>
+    <div class="card-features-grid">
+        <div class="card-feature-box animate-on-scroll animate-zoom-in delay-1">
+            <div class="card-feature-icon red"><i class="fas fa-lock"></i></div>
+            <h3>Secure Payments</h3>
+            <p>Advanced chip technology and contactless payments for secure transactions.</p>
+        </div>
+        <div class="card-feature-box animate-on-scroll animate-zoom-in delay-2">
+            <div class="card-feature-icon blue"><i class="fas fa-chart-line"></i></div>
+            <h3>Spending Analytics</h3>
+            <p>Track your spending with detailed analytics and budgeting tools.</p>
+        </div>
+        <div class="card-feature-box animate-on-scroll animate-zoom-in delay-3">
+            <div class="card-feature-icon green"><i class="fas fa-bell"></i></div>
+            <h3>Instant Alerts</h3>
+            <p>Real-time notifications for every transaction and account activity.</p>
+        </div>
+        <div class="card-feature-box animate-on-scroll animate-zoom-in delay-4">
+            <div class="card-feature-icon orange"><i class="fas fa-globe"></i></div>
+            <h3>Global Acceptance</h3>
+            <p>Use your card anywhere in the world with millions of merchants.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Card CTA Section -->
+<section class="card-cta">
+    <div class="card-cta-container">
+        <div class="card-cta-left animate-on-scroll animate-fade-left">
+            <h2>Ready to Get Started?</h2>
+            <p>Apply for your Stackly credit card today and start enjoying premium benefits and rewards. The application process is quick and easy.</p>
+            <div class="card-cta-btns">
+                <a href="404.html" class="card-cta-btn-primary">Apply Now <i class="fas fa-arrow-right"></i></a>
+                <a href="404.html" class="card-cta-btn-secondary">Learn More <i class="fas fa-info-circle"></i></a>
+            </div>
+        </div>
+        <div class="card-cta-right animate-on-scroll animate-fade-right">
+            <div class="cta-card-float ccard-1">
+                <div class="card-content">
+                    <div class="card-chip"></div>
+                    <div class="card-number">1234 5678 9012 3456</div>
+                    <div class="card-bottom">
+                        <div class="card-holder">Card Holder</div>
+                        <div class="card-logo">VISA</div>
+                    </div>
+                </div>
+            </div>
+            <div class="cta-card-float ccard-2">
+                <div class="card-content">
+                    <div class="card-chip"></div>
+                    <div class="card-number">5678 9012 3456 7890</div>
+                    <div class="card-bottom">
+                        <div class="card-holder">Card Holder</div>
+                        <div class="card-logo">VISA</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <img src="logo.webp" alt="Stackly logo">
+                </div>
+                Stackly
+            </a>
+            <p>Need Help</p>
+            <a href="tel:5614455352" class="phone">(561) 445-5352</a>
+            <div class="footer-social">
+                <a href="404.html"><i class="fab fa-twitter"></i></a>
+                <a href="404.html"><i class="fab fa-facebook-f"></i></a>
+                <a href="404.html"><i class="fab fa-instagram"></i></a>
+                <a href="404.html"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+        <div class="footer-column">
+            <h3>Company</h3>
+            <ul>
+                <li><a href="card.html">Card Overview</a></li>
+                <li><a href="mortage.html">Mortage loan</a></li>
+                <li><a href="personal.html">Personal loan</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Services</h3>
+            <ul>
+                <li><a href="404.html">Credit card</a></li>
+                <li><a href="404.html">Banking</a></li>
+                <li><a href="404.html">Deposit</a></li>
+                <li><a href="404.html">Apply</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Help Center</h3>
+            <ul>
+                <li><a href="404.html">Terms & Conditions</a></li>
+                <li><a href="404.html">FAQ</a></li>
+                <li><a href="404.html">Privacy Policy</a></li>
+                <li><a href="404.html">ATM locator</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© Stackly is proudly owned by <a href="#">EnvyTheme</a></p>
+        <div class="footer-bottom-links">
+            <a href="404.html">Terms & Conditions</a>
+            <a href="404.html">Privacy Policy</a>
+        </div>
+    </div>
+</footer>
+
+<!-- Back to Top -->
+<button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"><i class="fas fa-arrow-up"></i></button>
+
+<script>
+    function toggleMobileMenu() {
+        document.getElementById('mobileMenu').classList.toggle('active');
+        document.querySelector('.mobile-menu-overlay').classList.toggle('active');
+    }
+
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('.header');
+        if (window.scrollY > 50) {
+            header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+        } else {
+            header.style.boxShadow = 'none';
+        }
+    });
+
+    // Back to top button visibility
+    window.addEventListener('scroll', function() {
+        const btn = document.querySelector('.back-to-top');
+        if (window.scrollY > 500) {
+            btn.classList.add('visible');
+        } else {
+            btn.classList.remove('visible');
+        }
+    });
+
+    // Scroll Animation Observer
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        observer.observe(el);
+    });
+</script>
+
+</body>
+</html>
