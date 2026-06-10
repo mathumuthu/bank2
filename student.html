@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stackly Student Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Manrope', sans-serif; }
+        .nav-item.active { background: linear-gradient(135deg, #4338ca 0%, #0f766e 100%); color: #fff; }
+        .card-hover { transition: transform .25s ease, box-shadow .25s ease; }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 18px 35px rgba(15, 23, 42, .12); }
+        .sidebar-transition { transition: transform .28s ease-in-out; }
+        .mobile-overlay { background: rgba(15, 23, 42, .55); backdrop-filter: blur(3px); }
+        .shine { background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,0)); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 overflow-x-hidden">
+    <div class="lg:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center gap-3">
+            <button id="mobile-menu-btn" class="p-2 rounded-lg hover:bg-slate-100">
+                <i class="fas fa-bars text-slate-600 text-xl"></i>
+            </button>
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl overflow-hidden">
+    <img src="logoo.webp"
+         alt="Logo"
+         class="w-full h-full object-cover">
+</div>
+                <div>
+                    <h1 class="font-extrabold text-slate-900 text-sm leading-none">Stackly</h1>
+                    <p class="text-[10px] uppercase tracking-[0.2em] text-indigo-700 font-semibold mt-1">Student</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="relative p-2 rounded-lg hover:bg-slate-100">
+                <i class="fas fa-bell text-slate-600"></i>
+                <span class="absolute top-1 right-1 w-4 h-4 bg-rose-500 text-white text-[10px] rounded-full flex items-center justify-center">3</span>
+            </button>
+            <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center">ST</div>
+        </div>
+    </div>
+
+    <div class="flex min-h-screen">
+        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-72 bg-slate-950 text-slate-100 border-r border-slate-800 sidebar-transition transform -translate-x-full lg:translate-x-0 flex flex-col h-screen overflow-y-auto">
+            <div class="p-6 border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                   <div class="w-12 h-12 rounded-2xl overflow-hidden shadow-lg shadow-indigo-950/40">
+    <img src="logoo.webp"
+         alt="Logo"
+         class="w-full h-full object-cover">
+</div>
+                    <div>
+                        <h1 class="font-extrabold text-xl text-white">Stackly</h1>
+                        <p class="text-xs text-slate-400 uppercase tracking-[0.18em]">Student Portal</p>
+                    </div>
+                </div>
+                <div class="mt-5 p-4 rounded-2xl bg-white/5 border border-white/10">
+                    <p class="text-xs uppercase tracking-[0.16em] text-indigo-300 font-semibold">Current term</p>
+                    <div class="mt-2 flex items-end justify-between">
+                        <div>
+                            <p class="text-2xl font-bold">3.8</p>
+                            <p class="text-sm text-slate-400">GPA</p>
+                        </div>
+                        <span class="text-emerald-300 text-sm font-semibold flex items-center gap-1"><i class="fas fa-arrow-up"></i> +0.2</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="flex-1 px-4 py-4 space-y-1">
+                <button onclick="navigateTo('overview')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition-all active" data-page="overview"><i class="fas fa-house w-5 text-center"></i><span class="font-medium">Overview</span></button>
+                <button onclick="navigateTo('courses')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-page="courses"><i class="fas fa-book-open w-5 text-center"></i><span class="font-medium">Courses</span></button>
+                <button onclick="navigateTo('grades')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-page="grades"><i class="fas fa-chart-column w-5 text-center"></i><span class="font-medium">Grades</span></button>
+                <button onclick="navigateTo('attendance')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-page="attendance"><i class="fas fa-calendar-check w-5 text-center"></i><span class="font-medium">Attendance</span></button>
+                <button onclick="navigateTo('assignments')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-page="assignments"><i class="fas fa-clipboard-list w-5 text-center"></i><span class="font-medium">Assignments</span></button>
+                <button onclick="navigateTo('messages')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-page="messages"><i class="fas fa-message w-5 text-center"></i><span class="font-medium">Messages</span></button>
+            </nav>
+
+            <div class="p-4 border-t border-slate-800 space-y-3">
+                <!-- <a href="banking-admin-dashboard.html" class="block w-full px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-center text-sm font-semibold text-slate-100 border border-white/10">Admin View</a> -->
+                <a href="login.html" class="block w-full px-4 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition-colors text-center text-sm font-semibold text-white">Logout</a>
+            </div>
+        </aside>
+
+        <div id="sidebar-overlay" class="fixed inset-0 z-40 mobile-overlay hidden lg:hidden"></div>
+
+        <main class="flex-1 min-w-0 overflow-y-auto">
+            <header class="hidden lg:flex items-center justify-between px-8 py-5 bg-white border-b border-slate-200 sticky top-0 z-30">
+                <div class="flex-1 max-w-2xl">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" placeholder="Search courses, assignments, or fees..." class="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 ml-6">
+                    <button class="p-2 rounded-lg hover:bg-slate-100 text-slate-600"><i class="fas fa-envelope text-lg"></i></button>
+                    <button class="p-2 rounded-lg hover:bg-slate-100 text-slate-600 relative"><i class="fas fa-bell text-lg"></i><span class="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-rose-500"></span></button>
+                    <div class="flex items-center gap-3 pl-4 border-l border-slate-200">
+                        <div class="text-right"><p class="font-semibold text-slate-900">Maya Patel</p><p class="text-xs text-slate-500">Grade 11</p></div>
+                        <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center">MP</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="lg:hidden px-4 py-3 bg-white border-b border-slate-200">
+                <div class="relative">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" placeholder="Search courses..." class="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <div class="p-4 lg:p-8 max-w-7xl mx-auto">
+                <section id="page-overview" class="page-content">
+                    <div class="mb-8">
+                        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+                            <div>
+                                <p class="text-sm font-semibold text-indigo-700 uppercase tracking-[0.18em]">Stackly Student Dashboard</p>
+                                <h1 class="text-3xl lg:text-4xl font-extrabold text-slate-950 mt-2">Your school life in one place</h1>
+                                <p class="text-slate-500 mt-2">Track classes, grades, attendance, assignments, and school announcements.</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <a href="banking-admin-dashboard.html" class="px-4 py-3 rounded-xl border border-slate-300 text-slate-700 font-semibold hover:bg-slate-100 transition-colors">Admin View</a>
+                                <a href="login.html" class="px-4 py-3 rounded-xl bg-slate-950 text-white font-semibold hover:bg-slate-800 transition-colors">Sign Out</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 card-hover"><div class="flex items-center justify-between mb-4"><div class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center"><i class="fas fa-graduation-cap"></i></div><span class="text-emerald-600 text-xs font-semibold flex items-center gap-1"><i class="fas fa-arrow-up"></i> 0.2</span></div><p class="text-sm text-slate-500">GPA</p><p class="text-3xl font-extrabold text-slate-950 mt-1">3.8</p><p class="text-xs text-slate-400 mt-2">Current semester</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 card-hover"><div class="flex items-center justify-between mb-4"><div class="w-11 h-11 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center"><i class="fas fa-calendar-check"></i></div><span class="text-emerald-600 text-xs font-semibold flex items-center gap-1"><i class="fas fa-check"></i> 96%</span></div><p class="text-sm text-slate-500">Attendance</p><p class="text-3xl font-extrabold text-slate-950 mt-1">96%</p><p class="text-xs text-slate-400 mt-2">This term</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 card-hover"><div class="flex items-center justify-between mb-4"><div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center"><i class="fas fa-clipboard-list"></i></div><span class="text-amber-600 text-xs font-semibold flex items-center gap-1"><i class="fas fa-clock"></i> 5</span></div><p class="text-sm text-slate-500">Assignments Due</p><p class="text-3xl font-extrabold text-slate-950 mt-1">5</p><p class="text-xs text-slate-400 mt-2">Next 7 days</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 card-hover"><div class="flex items-center justify-between mb-4"><div class="w-11 h-11 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center"><i class="fas fa-bell"></i></div><span class="text-rose-600 text-xs font-semibold flex items-center gap-1"><i class="fas fa-circle"></i> 3</span></div><p class="text-sm text-slate-500">Announcements</p><p class="text-3xl font-extrabold text-slate-950 mt-1">3</p><p class="text-xs text-slate-400 mt-2">Unread updates</p></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                        <div class="xl:col-span-2 bg-slate-950 text-white rounded-3xl p-6 card-hover overflow-hidden relative">
+                            <div class="absolute inset-0 shine"></div>
+                            <div class="relative z-10 flex items-start justify-between gap-4">
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.18em] text-indigo-300 font-semibold">Today</p>
+                                    <h2 class="text-2xl font-bold mt-2">Grade 11 Science</h2>
+                                    <p class="text-slate-300 mt-2">Next class starts at 10:30 AM</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm text-slate-400">Upcoming test</p>
+                                    <p class="text-4xl font-extrabold mt-2">Fri</p>
+                                </div>
+                            </div>
+                            <div class="relative z-10 mt-8 grid grid-cols-3 gap-4 text-sm">
+                                <div class="rounded-2xl bg-white/10 p-4"><p class="text-slate-300">Math</p><p class="font-bold text-lg mt-1">A</p></div>
+                                <div class="rounded-2xl bg-white/10 p-4"><p class="text-slate-300">Science</p><p class="font-bold text-lg mt-1">A-</p></div>
+                                <div class="rounded-2xl bg-white/10 p-4"><p class="text-slate-300">English</p><p class="font-bold text-lg mt-1">B+</p></div>
+                            </div>
+                            <div class="relative z-10 mt-6 flex flex-wrap gap-3">
+                                <a href="404.html" class="px-4 py-3 rounded-xl bg-indigo-500 text-white font-semibold hover:bg-indigo-400 transition-colors">Join class</a>
+                                <a href="404.html" class="px-4 py-3 rounded-xl bg-white/10 border border-white/15 text-white font-semibold hover:bg-white/15 transition-colors">View timetable</a>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover">
+                                <h2 class="text-xl font-bold text-slate-950 mb-4">Upcoming classes</h2>
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between"><div><p class="font-semibold text-slate-950">Math</p><p class="text-sm text-slate-500">9:00 AM</p></div><span class="text-xs px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 font-semibold">Room 12</span></div>
+                                    <div class="flex items-center justify-between"><div><p class="font-semibold text-slate-950">Science</p><p class="text-sm text-slate-500">10:30 AM</p></div><span class="text-xs px-3 py-1 rounded-full bg-teal-100 text-teal-700 font-semibold">Lab</span></div>
+                                    <div class="flex items-center justify-between"><div><p class="font-semibold text-slate-950">English</p><p class="text-sm text-slate-500">12:00 PM</p></div><span class="text-xs px-3 py-1 rounded-full bg-amber-100 text-amber-700 font-semibold">Room 8</span></div>
+                                </div>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover">
+                                <h2 class="text-xl font-bold text-slate-950 mb-4">Quick actions</h2>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <a href="404.html" class="p-4 rounded-2xl bg-indigo-50 hover:bg-indigo-100 transition-colors text-center"><i class="fas fa-book text-indigo-700 text-xl mb-2"></i><p class="text-sm font-semibold text-slate-900">Library</p></a>
+                                    <a href="404.html" class="p-4 rounded-2xl bg-teal-50 hover:bg-teal-100 transition-colors text-center"><i class="fas fa-file-upload text-teal-700 text-xl mb-2"></i><p class="text-sm font-semibold text-slate-900">Submit work</p></a>
+                                    <a href="404.html" class="p-4 rounded-2xl bg-amber-50 hover:bg-amber-100 transition-colors text-center"><i class="fas fa-envelope-open-text text-amber-700 text-xl mb-2"></i><p class="text-sm font-semibold text-slate-900">Messages</p></a>
+                                    <a href="404.html" class="p-4 rounded-2xl bg-rose-50 hover:bg-rose-100 transition-colors text-center"><i class="fas fa-headset text-rose-700 text-xl mb-2"></i><p class="text-sm font-semibold text-slate-900">Help</p></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 xl:grid-cols-2 gap-6">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover">
+                            <div class="flex items-center justify-between mb-4"><h2 class="text-xl font-bold text-slate-950">Recent grades</h2><span class="text-sm text-slate-500">Last updated today</span></div>
+                            <div class="space-y-3">
+                                <div class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50"><div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center"><i class="fas fa-square-root-variable"></i></div><div class="flex-1"><p class="font-semibold text-slate-950">Mathematics</p><p class="text-sm text-slate-500">Quiz 4 and homework</p></div><span class="font-bold text-indigo-700">A</span></div>
+                                <div class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50"><div class="w-10 h-10 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center"><i class="fas fa-flask"></i></div><div class="flex-1"><p class="font-semibold text-slate-950">Science</p><p class="text-sm text-slate-500">Lab report</p></div><span class="font-bold text-teal-700">A-</span></div>
+                                <div class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50"><div class="w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center"><i class="fas fa-pen"></i></div><div class="flex-1"><p class="font-semibold text-slate-950">English</p><p class="text-sm text-slate-500">Essay submission</p></div><span class="font-bold text-amber-700">B+</span></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover">
+                            <div class="flex items-center justify-between mb-4"><h2 class="text-xl font-bold text-slate-950">Attendance tracker</h2><span class="px-3 py-1 rounded-full bg-teal-100 text-teal-700 text-xs font-semibold">96% present</span></div>
+                            <div class="space-y-4">
+                                <div><div class="flex justify-between text-sm mb-2"><span class="text-slate-600">Math</span><span class="font-semibold">100%</span></div><div class="w-full h-2 rounded-full bg-slate-200"><div class="h-2 rounded-full bg-indigo-600" style="width:100%"></div></div></div>
+                                <div><div class="flex justify-between text-sm mb-2"><span class="text-slate-600">Science</span><span class="font-semibold">95%</span></div><div class="w-full h-2 rounded-full bg-slate-200"><div class="h-2 rounded-full bg-teal-600" style="width:95%"></div></div></div>
+                                <div><div class="flex justify-between text-sm mb-2"><span class="text-slate-600">English</span><span class="font-semibold">92%</span></div><div class="w-full h-2 rounded-full bg-slate-200"><div class="h-2 rounded-full bg-amber-500" style="width:92%"></div></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="page-courses" class="page-content hidden">
+                    <h2 class="text-2xl font-bold text-slate-950 mb-4">Courses</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover"><p class="text-sm text-slate-500">Mathematics</p><p class="text-3xl font-extrabold mt-1">A</p><p class="text-sm text-slate-500 mt-2">Teacher: Mr. Lee</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover"><p class="text-sm text-slate-500">Science</p><p class="text-3xl font-extrabold mt-1">A-</p><p class="text-sm text-slate-500 mt-2">Teacher: Ms. Gomez</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover"><p class="text-sm text-slate-500">English</p><p class="text-3xl font-extrabold mt-1">B+</p><p class="text-sm text-slate-500 mt-2">Teacher: Mrs. Khan</p></div>
+                    </div>
+                </section>
+
+                <section id="page-grades" class="page-content hidden">
+                    <h2 class="text-2xl font-bold text-slate-950 mb-4">Grades</h2>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-4">
+                        <div><div class="flex justify-between text-sm mb-2"><span>Mathematics</span><span class="font-semibold">92%</span></div><div class="w-full h-2 rounded-full bg-slate-200"><div class="h-2 rounded-full bg-indigo-600" style="width:92%"></div></div></div>
+                        <div><div class="flex justify-between text-sm mb-2"><span>Science</span><span class="font-semibold">88%</span></div><div class="w-full h-2 rounded-full bg-slate-200"><div class="h-2 rounded-full bg-teal-600" style="width:88%"></div></div></div>
+                        <div><div class="flex justify-between text-sm mb-2"><span>English</span><span class="font-semibold">85%</span></div><div class="w-full h-2 rounded-full bg-slate-200"><div class="h-2 rounded-full bg-amber-500" style="width:85%"></div></div></div>
+                    </div>
+                </section>
+
+                <section id="page-attendance" class="page-content hidden">
+                    <h2 class="text-2xl font-bold text-slate-950 mb-4">Attendance</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6">
+                            <p class="text-sm text-slate-500">Present days</p><p class="text-3xl font-extrabold mt-1">114</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6">
+                            <p class="text-sm text-slate-500">Absences</p><p class="text-3xl font-extrabold mt-1">5</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="page-assignments" class="page-content hidden">
+                    <h2 class="text-2xl font-bold text-slate-950 mb-4">Assignments</h2>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-3">
+                        <div class="flex justify-between p-4 rounded-2xl bg-slate-50"><span>Math worksheet</span><span class="font-semibold text-indigo-700">Due tomorrow</span></div>
+                        <div class="flex justify-between p-4 rounded-2xl bg-slate-50"><span>Science lab report</span><span class="font-semibold text-teal-700">Due Friday</span></div>
+                        <div class="flex justify-between p-4 rounded-2xl bg-slate-50"><span>English essay</span><span class="font-semibold text-amber-700">Due next week</span></div>
+                    </div>
+                </section>
+
+                <section id="page-messages" class="page-content hidden">
+                    <h2 class="text-2xl font-bold text-slate-950 mb-4">Messages</h2>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-4">
+                        <div class="p-4 rounded-2xl bg-slate-50"><p class="font-semibold text-slate-950">Counselor</p><p class="text-sm text-slate-500">Your progress review is scheduled for Thursday.</p></div>
+                        <div class="p-4 rounded-2xl bg-slate-50"><p class="font-semibold text-slate-950">Science teacher</p><p class="text-sm text-slate-500">Lab instructions have been posted to the class page.</p></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+
+        function openSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function navigateTo(page) {
+            document.querySelectorAll('.page-content').forEach(section => section.classList.add('hidden'));
+            const target = document.getElementById('page-' + page);
+            if (target) target.classList.remove('hidden');
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            const activeItem = document.querySelector('.nav-item[data-page="' + page + '"]');
+            if (activeItem) activeItem.classList.add('active');
+            closeSidebar();
+            window.scrollTo(0, 0);
+        }
+
+        mobileMenuBtn.addEventListener('click', openSidebar);
+        overlay.addEventListener('click', closeSidebar);
+        window.addEventListener('resize', () => { if (window.innerWidth >= 1024) closeSidebar(); });
+        document.addEventListener('DOMContentLoaded', () => navigateTo('overview'));
+    </script>
+</body>
+</html>

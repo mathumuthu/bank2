@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stackly Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Manrope', sans-serif; }
+        .nav-item.active { background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%); color: #fff; }
+        .card-hover { transition: transform .25s ease, box-shadow .25s ease; }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 18px 35px rgba(15, 23, 42, .12); }
+        .glass { backdrop-filter: blur(10px); background: rgba(255,255,255,.82); }
+        .sidebar-transition { transition: transform .28s ease-in-out; }
+        .mobile-overlay { background: rgba(15, 23, 42, .55); backdrop-filter: blur(3px); }
+        .bar { transition: height .5s ease; }
+        .pulse-dot { box-shadow: 0 0 0 2px #fff, 0 0 0 5px currentColor; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 overflow-x-hidden">
+    <div class="lg:hidden bg-white/95 border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center gap-3">
+            <button id="mobile-menu-btn" class="p-2 rounded-lg hover:bg-slate-100">
+                <i class="fas fa-bars text-slate-600 text-xl"></i>
+            </button>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl overflow-hidden">
+    <img src="logo.webp"
+         alt="Logo"
+         class="w-full h-full object-contain">
+</div>
+                <div>
+                    <h1 class="font-extrabold text-slate-900 text-sm leading-none">Stackly</h1>
+                    <p class="text-[10px] uppercase tracking-[0.2em] text-blue-700 font-semibold mt-1">Admin</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="relative p-2 rounded-lg hover:bg-slate-100">
+                <i class="fas fa-bell text-slate-600"></i>
+                <span class="absolute top-1 right-1 w-4 h-4 bg-rose-500 text-white text-[10px] rounded-full flex items-center justify-center">4</span>
+            </button>
+            <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center">BA</div>
+        </div>
+    </div>
+
+    <div class="flex min-h-screen">
+        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-72 bg-slate-950 text-slate-100 border-r border-slate-800 sidebar-transition transform -translate-x-full lg:translate-x-0 flex flex-col h-screen overflow-y-auto">
+            <div class="p-6 border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl overflow-hidden shadow-lg">
+    <img src="logoo.webp"
+         alt="Logo"
+         class="w-full h-full object-contain">
+</div>
+                    <div>
+                        <h1 class="font-extrabold text-xl text-white">Stackly</h1>
+                        <p class="text-xs text-slate-400 uppercase tracking-[0.18em]">Administration Center</p>
+                    </div>
+                </div>
+                <div class="mt-5 p-4 rounded-2xl bg-white/5 border border-white/10">
+                    <p class="text-xs uppercase tracking-[0.16em] text-blue-300 font-semibold">Today</p>
+                    <div class="mt-2 flex items-end justify-between">
+                        <div>
+                            <p class="text-2xl font-bold">$4.82M</p>
+                            <p class="text-sm text-slate-400">Net position</p>
+                        </div>
+                        <span class="inline-flex items-center gap-1 text-emerald-300 text-sm font-semibold"><i class="fas fa-arrow-up"></i> 6.4%</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="flex-1 px-4 py-4 space-y-1">
+                <button onclick="navigateTo('overview')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition-all active" data-page="overview">
+                    <i class="fas fa-chart-line w-5 text-center"></i><span class="font-medium">Overview</span>
+                </button>
+                <button onclick="navigateTo('accounts')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-page="accounts">
+                    <i class="fas fa-wallet w-5 text-center"></i><span class="font-medium">Accounts</span>
+                    <span class="ml-auto text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full">1,284</span>
+                </button>
+                <button onclick="navigateTo('transactions')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-page="transactions">
+                    <i class="fas fa-right-left w-5 text-center"></i><span class="font-medium">Transactions</span>
+                </button>
+                <button onclick="navigateTo('loans')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-page="loans">
+                    <i class="fas fa-hand-holding-dollar w-5 text-center"></i><span class="font-medium">Loans</span>
+                    <span class="ml-auto text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">38</span>
+                </button>
+                <button onclick="navigateTo('compliance')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-page="compliance">
+                    <i class="fas fa-shield-halved w-5 text-center"></i><span class="font-medium">Compliance</span>
+                </button>
+                <button onclick="navigateTo('reports')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-page="reports">
+                    <i class="fas fa-file-chart-column w-5 text-center"></i><span class="font-medium">Reports</span>
+                </button>
+                <button onclick="navigateTo('settings')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-page="settings">
+                    <i class="fas fa-gear w-5 text-center"></i><span class="font-medium">Settings</span>
+                </button>
+            </nav>
+
+            <div class="p-4 border-t border-slate-800 space-y-3">
+                <a href="customer-dashboard.html" class="block w-full px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-center text-sm font-semibold text-slate-100 border border-white/10">Open Customer Dashboard</a>
+                <a href="login.html" class="block w-full px-4 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 transition-colors text-center text-sm font-semibold text-white">Logout</a>
+            </div>
+        </aside>
+
+        <div id="sidebar-overlay" class="fixed inset-0 z-40 mobile-overlay hidden lg:hidden"></div>
+
+        <main class="flex-1 min-w-0 overflow-y-auto">
+            <header class="hidden lg:flex items-center justify-between px-8 py-5 bg-white/90 glass border-b border-slate-200 sticky top-0 z-30">
+                <div class="flex-1 max-w-2xl">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" placeholder="Search accounts, transactions, loan applications..." class="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 ml-6">
+                    <button class="p-2 rounded-lg hover:bg-slate-100 text-slate-600"><i class="fas fa-envelope text-lg"></i></button>
+                    <button class="p-2 rounded-lg hover:bg-slate-100 text-slate-600 relative"><i class="fas fa-bell text-lg"></i><span class="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-rose-500 pulse-dot"></span></button>
+                    <div class="flex items-center gap-3 pl-4 border-l border-slate-200">
+                        <div class="text-right">
+                            <p class="font-semibold text-slate-900">Bank Admin</p>
+                            <p class="text-xs text-slate-500">Risk & Operations</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center">BA</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="lg:hidden px-4 py-3 bg-white border-b border-slate-200">
+                <div class="relative">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" placeholder="Search accounts..." class="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <div class="p-4 lg:p-8 max-w-7xl mx-auto">
+                <section id="page-overview" class="page-content">
+                    <div class="mb-8">
+                        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+                            <div>
+                                <p class="text-sm font-semibold text-blue-700 uppercase tracking-[0.18em]">Stackly Admin Dashboard</p>
+                                <h1 class="text-3xl lg:text-4xl font-extrabold text-slate-950 mt-2">Operations overview</h1>
+                                <p class="text-slate-500 mt-2">Monitor deposits, risk, customer activity, and lending performance in one place.</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <a href="customer-dashboard.html" class="px-4 py-3 rounded-xl border border-slate-300 text-slate-700 font-semibold hover:bg-slate-100 transition-colors">Customer View</a>
+                                <a href="login.html" class="px-4 py-3 rounded-xl bg-slate-950 text-white font-semibold hover:bg-slate-800 transition-colors">Sign Out</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 card-hover">
+                            <div class="flex items-center justify-between mb-4"><div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center"><i class="fas fa-landmark"></i></div><span class="text-emerald-600 text-xs font-semibold flex items-center gap-1"><i class="fas fa-arrow-up"></i> 8.2%</span></div>
+                            <p class="text-sm text-slate-500">Total Deposits</p><p class="text-3xl font-extrabold text-slate-950 mt-1">$128.4M</p><p class="text-xs text-slate-400 mt-2">Across all branches</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 card-hover">
+                            <div class="flex items-center justify-between mb-4"><div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fas fa-users"></i></div><span class="text-emerald-600 text-xs font-semibold flex items-center gap-1"><i class="fas fa-arrow-up"></i> 4.7%</span></div>
+                            <p class="text-sm text-slate-500">Active Accounts</p><p class="text-3xl font-extrabold text-slate-950 mt-1">1,284</p><p class="text-xs text-slate-400 mt-2">Retail and business</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 card-hover">
+                            <div class="flex items-center justify-between mb-4"><div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center"><i class="fas fa-hand-holding-dollar"></i></div><span class="text-rose-600 text-xs font-semibold flex items-center gap-1"><i class="fas fa-arrow-up"></i> 12</span></div>
+                            <p class="text-sm text-slate-500">Loan Applications</p><p class="text-3xl font-extrabold text-slate-950 mt-1">38</p><p class="text-xs text-slate-400 mt-2">Under review</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 card-hover">
+                            <div class="flex items-center justify-between mb-4"><div class="w-11 h-11 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center"><i class="fas fa-shield-halved"></i></div><span class="text-amber-600 text-xs font-semibold flex items-center gap-1"><i class="fas fa-circle-exclamation"></i> 6</span></div>
+                            <p class="text-sm text-slate-500">Risk Alerts</p><p class="text-3xl font-extrabold text-slate-950 mt-1">6</p><p class="text-xs text-slate-400 mt-2">Needs attention</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                        <div class="xl:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 card-hover">
+                            <div class="flex items-center justify-between mb-6">
+                                <div>
+                                    <h2 class="text-xl font-bold text-slate-950">Cash movement trends</h2>
+                                    <p class="text-sm text-slate-500">Deposits, withdrawals, and transfers for the last 6 months</p>
+                                </div>
+                                <select class="px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option>Last 6 Months</option>
+                                    <option>Last 12 Months</option>
+                                </select>
+                            </div>
+                            <div class="h-72 flex items-end gap-3 px-2">
+                                <div class="flex-1 flex flex-col items-center gap-2"><div class="w-full bg-blue-100 rounded-t-2xl bar" style="height: 40%"></div><div class="w-full bg-slate-200 rounded-t-xl bar" style="height: 26%"></div><span class="text-xs text-slate-500">Jan</span></div>
+                                <div class="flex-1 flex flex-col items-center gap-2"><div class="w-full bg-blue-100 rounded-t-2xl bar" style="height: 54%"></div><div class="w-full bg-slate-200 rounded-t-xl bar" style="height: 31%"></div><span class="text-xs text-slate-500">Feb</span></div>
+                                <div class="flex-1 flex flex-col items-center gap-2"><div class="w-full bg-blue-100 rounded-t-2xl bar" style="height: 62%"></div><div class="w-full bg-slate-200 rounded-t-xl bar" style="height: 44%"></div><span class="text-xs text-slate-500">Mar</span></div>
+                                <div class="flex-1 flex flex-col items-center gap-2"><div class="w-full bg-blue-100 rounded-t-2xl bar" style="height: 50%"></div><div class="w-full bg-slate-200 rounded-t-xl bar" style="height: 38%"></div><span class="text-xs text-slate-500">Apr</span></div>
+                                <div class="flex-1 flex flex-col items-center gap-2"><div class="w-full bg-blue-100 rounded-t-2xl bar" style="height: 72%"></div><div class="w-full bg-slate-200 rounded-t-xl bar" style="height: 46%"></div><span class="text-xs text-slate-500">May</span></div>
+                                <div class="flex-1 flex flex-col items-center gap-2"><div class="w-full bg-blue-100 rounded-t-2xl bar" style="height: 80%"></div><div class="w-full bg-slate-200 rounded-t-xl bar" style="height: 52%"></div><span class="text-xs text-slate-500">Jun</span></div>
+                            </div>
+                            <div class="flex flex-wrap gap-4 justify-center mt-5 text-sm text-slate-600">
+                                <span class="inline-flex items-center gap-2"><span class="w-3 h-3 rounded bg-blue-100"></span>Deposits</span>
+                                <span class="inline-flex items-center gap-2"><span class="w-3 h-3 rounded bg-slate-200"></span>Withdrawals</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="bg-slate-950 text-white rounded-2xl p-6 card-hover">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div>
+                                        <p class="text-xs uppercase tracking-[0.18em] text-blue-300 font-semibold">Fraud watch</p>
+                                        <h2 class="text-xl font-bold mt-2">High priority</h2>
+                                    </div>
+                                    <span class="w-3 h-3 rounded-full bg-rose-500 animate-pulse"></span>
+                                </div>
+                                <div class="space-y-3 text-sm">
+                                    <div class="flex items-center justify-between"><span class="text-slate-400">Flagged transfers</span><span class="font-semibold">14</span></div>
+                                    <div class="flex items-center justify-between"><span class="text-slate-400">Suspicious logins</span><span class="font-semibold">3</span></div>
+                                    <div class="flex items-center justify-between"><span class="text-slate-400">AML cases</span><span class="font-semibold">2</span></div>
+                                </div>
+                                <a href="404.html" class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-300 hover:text-blue-200">Open risk queue <i class="fas fa-arrow-right"></i></a>
+                            </div>
+
+                            <div class="bg-white rounded-2xl border border-slate-200 p-6 card-hover">
+                                <h2 class="text-xl font-bold text-slate-950 mb-4">Quick actions</h2>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <a href="404.html" class="p-4 rounded-2xl bg-blue-50 hover:bg-blue-100 transition-colors text-center"><i class="fas fa-user-plus text-blue-700 text-xl mb-2"></i><p class="text-sm font-semibold text-slate-900">Open Account</p></a>
+                                    <a href="404.html" class="p-4 rounded-2xl bg-emerald-50 hover:bg-emerald-100 transition-colors text-center"><i class="fas fa-file-invoice-dollar text-emerald-700 text-xl mb-2"></i><p class="text-sm font-semibold text-slate-900">Approve Loan</p></a>
+                                    <a href="404.html" class="p-4 rounded-2xl bg-amber-50 hover:bg-amber-100 transition-colors text-center"><i class="fas fa-shield text-amber-700 text-xl mb-2"></i><p class="text-sm font-semibold text-slate-900">Review Case</p></a>
+                                    <a href="404.html" class="p-4 rounded-2xl bg-rose-50 hover:bg-rose-100 transition-colors text-center"><i class="fas fa-file-export text-rose-700 text-xl mb-2"></i><p class="text-sm font-semibold text-slate-900">Export Report</p></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 xl:grid-cols-2 gap-6">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-xl font-bold text-slate-950">Recent transactions</h2>
+                                <span class="text-sm text-slate-500">Last 24 hours</span>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50"><div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fas fa-arrow-down"></i></div><div class="flex-1"><p class="font-semibold text-slate-950">Incoming transfer</p><p class="text-sm text-slate-500">Acme Corp settlement</p></div><span class="font-bold text-emerald-600">+$48,000</span></div>
+                                <div class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50"><div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center"><i class="fas fa-credit-card"></i></div><div class="flex-1"><p class="font-semibold text-slate-950">Card settlement</p><p class="text-sm text-slate-500">Retail POS batch</p></div><span class="font-bold text-slate-700">-$12,450</span></div>
+                                <div class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50"><div class="w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center"><i class="fas fa-building-columns"></i></div><div class="flex-1"><p class="font-semibold text-slate-950">Branch deposit</p><p class="text-sm text-slate-500">Downtown branch</p></div><span class="font-bold text-emerald-600">+$9,200</span></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-xl font-bold text-slate-950">Loan pipeline</h2>
+                                <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">38 open</span>
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex items-center justify-between text-sm mb-2"><span class="text-slate-600">Home loans</span><span class="font-semibold text-slate-950">72%</span></div>
+                                    <div class="w-full h-2 rounded-full bg-slate-200"><div class="h-2 rounded-full bg-blue-600" style="width:72%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex items-center justify-between text-sm mb-2"><span class="text-slate-600">Business loans</span><span class="font-semibold text-slate-950">58%</span></div>
+                                    <div class="w-full h-2 rounded-full bg-slate-200"><div class="h-2 rounded-full bg-emerald-600" style="width:58%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex items-center justify-between text-sm mb-2"><span class="text-slate-600">Auto loans</span><span class="font-semibold text-slate-950">31%</span></div>
+                                    <div class="w-full h-2 rounded-full bg-slate-200"><div class="h-2 rounded-full bg-amber-500" style="width:31%"></div></div>
+                                </div>
+                                <div class="pt-4 border-t border-slate-200 flex items-center gap-3">
+                                    <div class="w-12 h-12 rounded-2xl bg-slate-950 text-white flex items-center justify-center"><i class="fas fa-clipboard-check"></i></div>
+                                    <div>
+                                        <p class="font-semibold text-slate-950">Underwriter queue</p>
+                                        <p class="text-sm text-slate-500">11 files ready for final review today</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="page-accounts" class="page-content hidden">
+                    <h2 class="text-2xl font-bold text-slate-950 mb-4">Accounts</h2>
+                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+                        <table class="w-full">
+                            <thead class="bg-slate-50 border-b border-slate-200 text-left text-xs uppercase tracking-wider text-slate-500">
+                                <tr><th class="px-6 py-4">Customer</th><th class="px-6 py-4">Type</th><th class="px-6 py-4">Balance</th><th class="px-6 py-4">Status</th><th class="px-6 py-4">Risk</th></tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                <tr><td class="px-6 py-4"><p class="font-semibold text-slate-950">Northwind Ltd.</p><p class="text-sm text-slate-500">Business checking</p></td><td class="px-6 py-4 text-slate-600">Corporate</td><td class="px-6 py-4 font-bold">$2.8M</td><td class="px-6 py-4"><span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-semibold">Active</span></td><td class="px-6 py-4 text-slate-600">Low</td></tr>
+                                <tr><td class="px-6 py-4"><p class="font-semibold text-slate-950">Amina Khan</p><p class="text-sm text-slate-500">Personal savings</p></td><td class="px-6 py-4 text-slate-600">Retail</td><td class="px-6 py-4 font-bold">$84,200</td><td class="px-6 py-4"><span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-semibold">Active</span></td><td class="px-6 py-4 text-slate-600">Low</td></tr>
+                                <tr><td class="px-6 py-4"><p class="font-semibold text-slate-950">Evergreen Properties</p><p class="text-sm text-slate-500">Commercial loan</p></td><td class="px-6 py-4 text-slate-600">Lending</td><td class="px-6 py-4 font-bold">$540K</td><td class="px-6 py-4"><span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">Review</span></td><td class="px-6 py-4 text-slate-600">Medium</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="page-transactions" class="page-content hidden">
+                    <h2 class="text-2xl font-bold text-slate-950 mb-4">Transactions</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5"><p class="text-sm text-slate-500">Approved Today</p><p class="text-3xl font-extrabold text-slate-950 mt-1">842</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5"><p class="text-sm text-slate-500">Pending Review</p><p class="text-3xl font-extrabold text-slate-950 mt-1">64</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5"><p class="text-sm text-slate-500">Blocked</p><p class="text-3xl font-extrabold text-slate-950 mt-1">7</p></div>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-3">
+                        <div class="flex justify-between p-4 rounded-2xl bg-slate-50"><span>Payroll batch</span><span class="font-semibold text-emerald-600">+$286,000</span></div>
+                        <div class="flex justify-between p-4 rounded-2xl bg-slate-50"><span>ATM withdrawals</span><span class="font-semibold text-slate-700">-$41,200</span></div>
+                        <div class="flex justify-between p-4 rounded-2xl bg-slate-50"><span>ACH settlement</span><span class="font-semibold text-emerald-600">+$103,400</span></div>
+                    </div>
+                </section>
+
+                <section id="page-loans" class="page-content hidden">
+                    <h2 class="text-2xl font-bold text-slate-950 mb-4">Loans</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover"><p class="text-sm text-slate-500">Home Loans</p><p class="text-3xl font-extrabold mt-1">$58.2M</p><p class="text-sm text-emerald-600 mt-2">92 approved this month</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover"><p class="text-sm text-slate-500">Business Loans</p><p class="text-3xl font-extrabold mt-1">$21.4M</p><p class="text-sm text-emerald-600 mt-2">18 approved this month</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover"><p class="text-sm text-slate-500">Auto Loans</p><p class="text-3xl font-extrabold mt-1">$6.7M</p><p class="text-sm text-emerald-600 mt-2">40 approved this month</p></div>
+                    </div>
+                </section>
+
+                <section id="page-compliance" class="page-content hidden">
+                    <h2 class="text-2xl font-bold text-slate-950 mb-4">Compliance</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6">
+                            <h3 class="font-bold text-lg text-slate-950 mb-4">Review queue</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50"><span>KYB pending</span><span class="font-semibold text-amber-600">12</span></div>
+                                <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50"><span>AML escalations</span><span class="font-semibold text-rose-600">4</span></div>
+                                <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50"><span>Sanctions hits</span><span class="font-semibold text-rose-600">2</span></div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-950 text-white rounded-2xl p-6">
+                            <p class="text-xs uppercase tracking-[0.18em] text-blue-300 font-semibold">Audit status</p>
+                            <h3 class="font-bold text-2xl mt-2">93% controls passed</h3>
+                            <p class="text-slate-400 mt-2">Quarterly review remains on track with no critical failures.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="page-reports" class="page-content hidden">
+                    <h2 class="text-2xl font-bold text-slate-950 mb-4">Reports</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover"><p class="font-bold text-lg text-slate-950">Daily operations</p><p class="text-sm text-slate-500 mt-2">Cash, branches, and service metrics.</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover"><p class="font-bold text-lg text-slate-950">Risk summary</p><p class="text-sm text-slate-500 mt-2">Alerts, cases, and exposure overview.</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-hover"><p class="font-bold text-lg text-slate-950">Loan portfolio</p><p class="text-sm text-slate-500 mt-2">Pipeline, approvals, and delinquency trends.</p></div>
+                    </div>
+                </section>
+
+                <section id="page-settings" class="page-content hidden">
+                    <h2 class="text-2xl font-bold text-slate-950 mb-4">Settings</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 space-y-4">
+                            <div class="flex items-center justify-between py-3 border-b border-slate-200"><div><p class="font-semibold text-slate-950">MFA required</p><p class="text-sm text-slate-500">Enforce for all admin users</p></div><span class="text-emerald-600 font-semibold">On</span></div>
+                            <div class="flex items-center justify-between py-3 border-b border-slate-200"><div><p class="font-semibold text-slate-950">Fraud alerts</p><p class="text-sm text-slate-500">Real-time suspicious activity monitoring</p></div><span class="text-emerald-600 font-semibold">On</span></div>
+                            <div class="flex items-center justify-between py-3"><div><p class="font-semibold text-slate-950">Session timeout</p><p class="text-sm text-slate-500">Auto logout after inactivity</p></div><span class="text-slate-600 font-semibold">30 min</span></div>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6"><p class="font-bold text-slate-950 mb-2">System status</p><p class="text-sm text-slate-500">All core services are online and processing normally.</p></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+
+        function openSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function navigateTo(page) {
+            document.querySelectorAll('.page-content').forEach(section => section.classList.add('hidden'));
+            const target = document.getElementById('page-' + page);
+            if (target) target.classList.remove('hidden');
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            const activeItem = document.querySelector('.nav-item[data-page="' + page + '"]');
+            if (activeItem) activeItem.classList.add('active');
+            closeSidebar();
+            window.scrollTo(0, 0);
+        }
+
+        mobileMenuBtn.addEventListener('click', openSidebar);
+        overlay.addEventListener('click', closeSidebar);
+        window.addEventListener('resize', () => { if (window.innerWidth >= 1024) closeSidebar(); });
+        document.addEventListener('DOMContentLoaded', () => navigateTo('overview'));
+    </script>
+</body>
+</html>

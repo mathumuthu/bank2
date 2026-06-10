@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Page Not Found</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    overflow:hidden;
+    color:#fff;
+}
+
+.container{
+    text-align:center;
+    padding:20px;
+}
+
+.error-code{
+    font-size:10rem;
+    font-weight:900;
+    background:linear-gradient(45deg,#38bdf8,#818cf8);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:float 3s ease-in-out infinite;
+}
+
+h2{
+    font-size:2rem;
+    margin-bottom:15px;
+}
+
+p{
+    color:#cbd5e1;
+    max-width:500px;
+    margin:auto;
+    margin-bottom:30px;
+    line-height:1.7;
+}
+
+.btn{
+    display:inline-block;
+    padding:14px 30px;
+    background:#38bdf8;
+    color:#fff;
+    text-decoration:none;
+    border-radius:50px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn:hover{
+    background:#0ea5e9;
+    transform:translateY(-3px);
+}
+
+.circle{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,.05);
+    animation:move 10s linear infinite;
+}
+
+.circle:nth-child(1){
+    width:150px;
+    height:150px;
+    top:10%;
+    left:10%;
+}
+
+.circle:nth-child(2){
+    width:250px;
+    height:250px;
+    bottom:10%;
+    right:10%;
+}
+
+@keyframes float{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-15px);
+    }
+}
+
+@keyframes move{
+    0%{
+        transform:translateY(0) rotate(0deg);
+    }
+    100%{
+        transform:translateY(-50px) rotate(360deg);
+    }
+}
+
+@media(max-width:768px){
+    .error-code{
+        font-size:6rem;
+    }
+
+    h2{
+        font-size:1.5rem;
+    }
+
+    p{
+        font-size:14px;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="circle"></div>
+<div class="circle"></div>
+
+<div class="container">
+    <div class="error-code">404</div>
+
+    <h2>Oops! Page Not Found</h2>
+
+    <p>
+        The page you're looking for doesn't exist or has been moved.
+        Please check the URL or return to the homepage.
+    </p>
+
+    <a href="index.html" class="btn">🏠 Back to Home</a>
+</div>
+
+<script>
+// Simple console message
+console.log("404 Page Loaded");
+
+// Optional auto redirect after 15 seconds
+setTimeout(() => {
+    console.log("Redirecting to Home...");
+    // window.location.href = "index.html";
+}, 15000);
+</script>
+
+</body>
+</html>
