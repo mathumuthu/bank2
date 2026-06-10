@@ -118,6 +118,29 @@ p{
         font-size:14px;
     }
 }
+
+button.btn{
+    border:none;
+    cursor:pointer;
+}
+.robot{
+    font-size:90px;
+    margin-bottom:20px;
+    animation:float 3s ease-in-out infinite;
+    filter:drop-shadow(0 0 20px rgba(56,189,248,.5));
+}
+
+.btn-group{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+
+
+
 </style>
 </head>
 <body>
@@ -126,18 +149,32 @@ p{
 <div class="circle"></div>
 
 <div class="container">
-    <div class="error-code">404</div>
+    <div class="robot">🤖</div>
 
-    <h2>Oops! Page Not Found</h2>
+<div class="error-code">404</div>
 
-    <p>
-        The page you're looking for doesn't exist or has been moved.
-        Please check the URL or return to the homepage.
-    </p>
+<h2>Oops! Lost in Space</h2>
 
-    <a href="index.html" class="btn">🏠 Back to Home</a>
+<p>
+    Sorry, the page you are looking for cannot be found.
+    It may have been moved, deleted, or never existed.
+</p>
+    
+</div>
+<div class="btn-group">
+    <button class="btn" onclick="goBack()">⬅ Go Back</button>
+    <a href="index.html" class="btn">🏠 Home</a>
 </div>
 
+<script>
+function goBack() {
+    if (window.history.length > 1) {
+        history.back();
+    } else {
+        window.location.href = "index.html";
+    }
+}
+</script>
 <script>
 // Simple console message
 console.log("404 Page Loaded");
