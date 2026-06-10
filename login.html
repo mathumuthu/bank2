@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi User Login</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#4f46e5,#7c3aed);
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:950px;
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 15px 35px rgba(0,0,0,.2);
+    display:grid;
+    grid-template-columns:1fr 1fr;
+}
+
+.left{
+    background:linear-gradient(135deg,#4338ca,#7c3aed);
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:40px;
+}
+
+.left h1{
+    font-size:2.2rem;
+    margin-bottom:10px;
+}
+
+.left p{
+    line-height:1.7;
+}
+
+.right{
+    padding:40px;
+}
+
+.tabs{
+    display:flex;
+    background:#f1f5f9;
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:25px;
+}
+
+.tabs button{
+    flex:1;
+    border:none;
+    padding:15px;
+    cursor:pointer;
+    font-weight:bold;
+    background:transparent;
+    transition:.3s;
+}
+
+.tabs button.active{
+    background:#4f46e5;
+    color:#fff;
+}
+
+.form{
+    display:none;
+}
+
+.form.active{
+    display:block;
+}
+
+.input-box{
+    margin-bottom:15px;
+}
+
+.input-box label{
+    display:block;
+    margin-bottom:5px;
+    font-size:14px;
+}
+
+.input-box input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.password-wrapper{
+    position:relative;
+}
+
+.password-wrapper span{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+}
+
+.btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    background:#4f46e5;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#3730a3;
+}
+
+.info{
+    margin-top:15px;
+    text-align:center;
+    color:#666;
+}
+
+@media(max-width:768px){
+
+    .container{
+        grid-template-columns:1fr;
+    }
+
+    .left{
+        padding:30px 20px;
+    }
+
+    .right{
+        padding:25px;
+    }
+
+    .left h1{
+        font-size:1.8rem;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="left">
+        <h1>Welcome Back</h1>
+        <p>
+            Login as User or Admin.
+            Fully Responsive Design for Mobile,
+            Tablet and Desktop.
+        </p>
+    </div>
+
+    <div class="right">
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('user')">
+                User Login
+            </button>
+
+            <button class="tab-btn" onclick="showTab('admin')">
+                Admin Login
+            </button>
+        </div>
+
+        <!-- USER LOGIN -->
+
+        <div class="form active" id="userForm">
+
+            <div class="input-box">
+                <label>Email</label>
+                <input type="email" id="userEmail" placeholder="Enter Email">
+            </div>
+
+            <div class="input-box">
+                <label>Password</label>
+
+                <div class="password-wrapper">
+                    <input type="password" id="userPassword" placeholder="Enter Password">
+                    <span onclick="togglePassword('userPassword')">👁</span>
+                </div>
+            </div>
+
+            <button class="btn" onclick="userLogin()">
+                Login as User
+            </button>
+
+            <div class="info">
+                Demo Password: user123
+            </div>
+
+        </div>
+
+        <!-- ADMIN LOGIN -->
+
+        <div class="form" id="adminForm">
+
+            <div class="input-box">
+                <label>Admin Email</label>
+                <input type="email" id="adminEmail" placeholder="Enter Admin Email">
+            </div>
+
+            <div class="input-box">
+                <label>Admin Password</label>
+
+                <div class="password-wrapper">
+                    <input type="password" id="adminPassword" placeholder="Enter Password">
+                    <span onclick="togglePassword('adminPassword')">👁</span>
+                </div>
+            </div>
+
+            <button class="btn" onclick="adminLogin()">
+                Login as Admin
+            </button>
+
+            <div class="info">
+                Special Password: ADMIN@2026
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function showTab(type){
+
+    document.querySelectorAll('.form').forEach(form=>{
+        form.classList.remove('active');
+    });
+
+    document.querySelectorAll('.tab-btn').forEach(btn=>{
+        btn.classList.remove('active');
+    });
+
+    if(type === 'user'){
+        document.getElementById('userForm').classList.add('active');
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+    }
+    else{
+        document.getElementById('adminForm').classList.add('active');
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    }
+}
+
+function togglePassword(id){
+
+    let input = document.getElementById(id);
+
+    if(input.type === "password"){
+        input.type = "text";
+    }
+    else{
+        input.type = "password";
+    }
+}
+
+/* USER LOGIN */
+
+function userLogin(){
+
+    let email = document.getElementById("userEmail").value;
+    let password = document.getElementById("userPassword").value;
+
+    if(email === "" || password === ""){
+        alert("⚠ Please fill all fields");
+        return;
+    }
+
+    if(password === "user123"){
+        alert("✅ User Login Successful");
+
+        // Redirect
+         window.location.href="admin.html";
+    }
+    else{
+        alert("❌ Invalid User Password");
+    }
+}
+
+/* ADMIN LOGIN */
+
+function adminLogin(){
+
+    let email = document.getElementById("adminEmail").value;
+    let password = document.getElementById("adminPassword").value;
+
+    if(email === "" || password === ""){
+        alert("⚠ Please fill all fields");
+        return;
+    }
+
+    if(password === "ADMIN@2026"){
+        alert("🎉 Admin Login Successful");
+
+        // Redirec
+         window.location.href="student.html";
+    }
+    else{
+        alert("🚫 Unauthorized Access! Wrong Admin Password");
+    }
+}
+
+</script>
+
+</body>
+</html>
