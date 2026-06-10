@@ -134,8 +134,63 @@
         @media (max-width: 992px) { .nav-links { display: none; } .mobile-menu-btn { display: block; } .hero-title { font-size: 42px; } .section-title { font-size: 34px; } .footer-container { grid-template-columns: 1fr; } }
         @media (max-width: 768px) { .hero { padding: 120px 5% 60px; } .hero-title { font-size: 32px; } .hero-desc { font-size: 16px; } .section { padding: 80px 5%; } .hero-actions { flex-direction: column; } .btn-primary, .btn-secondary { justify-content: center; } .footer-bottom { flex-direction: column; text-align: center; } }
         @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
-    </style>
-    <base target="_blank">
+   
+   
+   @media (max-width: 768px) {
+
+    .header {
+        padding: 0 15px;
+    }
+
+    .search-btn,
+    .atm-link,
+    .open-account {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .page-hero-title {
+        font-size: 28px;
+        line-height: 1.3;
+    }
+
+    .page-hero-desc {
+        font-size: 15px;
+    }
+
+    .mobile-menu {
+        overflow-y: auto;
+    }
+
+    .footer-bottom-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .footer-social {
+        justify-content: center;
+    }
+}
+   
+   
+   
+   
+   
+   
+   </style>
+    <!-- <base target="_blank"> -->
 </head>
 <body>
 <header class="header">
@@ -222,7 +277,7 @@
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-brand">
-            <a href="#" class="logo">
+            <a href="index.html" class="logo">
                 <div class="logo-icon">
                     <img src="logoo.webp" alt="Stackly logo">
                 </div>
