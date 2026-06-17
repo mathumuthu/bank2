@@ -1,329 +1,550 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Multi User Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - PEOPLED</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
-}
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            teal: '#2A7A85',
+                            darkTeal: '#1E5A63',
+                            yellow: '#F4B942',
+                            light: '#F8F9FA',
+                            gray: '#6C757D'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 20px 40px -15px rgba(0, 0, 0, 0.1)',
+                        'card': '0 10px 30px -5px rgba(42, 122, 133, 0.15)',
+                        'glow': '0 0 40px -10px rgba(244, 185, 66, 0.5)',
+                    }
+                }
+            }
+        }
+    </script>
 
-body{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#4f46e5,#7c3aed);
-    padding:20px;
-}
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
 
-.container{
-    width:100%;
-    max-width:950px;
-    background:#fff;
-    border-radius:20px;
-    overflow:hidden;
-    box-shadow:0 15px 35px rgba(0,0,0,.2);
-    display:grid;
-    grid-template-columns:1fr 1fr;
-}
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-delayed { animation: float 7s ease-in-out infinite 1s; }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #2A7A85 0%, #F4B942 50%, #2A7A85 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 5s ease infinite;
+        }
 
-.left{
-    background:linear-gradient(135deg,#4338ca,#7c3aed);
-    color:white;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    padding:40px;
-}
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .group:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
 
-.left h1{
-    font-size:2.2rem;
-    margin-bottom:10px;
-}
+        .mobile-dropdown-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease;
+            opacity: 0;
+        }
+        
+        .mobile-dropdown-content.active {
+            max-height: 500px;
+            opacity: 1;
+        }
 
-.left p{
-    line-height:1.7;
-}
+        .mobile-dropdown-arrow {
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-dropdown-arrow.active {
+            transform: rotate(180deg);
+        }
 
-.right{
-    padding:40px;
-}
+        /* Form transitions */
+        .form-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .form-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.tabs{
-    display:flex;
-    background:#f1f5f9;
-    border-radius:10px;
-    overflow:hidden;
-    margin-bottom:25px;
-}
+        .input-group {
+            position: relative;
+        }
+        
+        .input-group input {
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            box-shadow: 0 0 0 3px rgba(42, 122, 133, 0.1);
+        }
 
-.tabs button{
-    flex:1;
-    border:none;
-    padding:15px;
-    cursor:pointer;
-    font-weight:bold;
-    background:transparent;
-    transition:.3s;
-}
-
-.tabs button.active{
-    background:#4f46e5;
-    color:#fff;
-}
-
-.form{
-    display:none;
-}
-
-.form.active{
-    display:block;
-}
-
-.input-box{
-    margin-bottom:15px;
-}
-
-.input-box label{
-    display:block;
-    margin-bottom:5px;
-    font-size:14px;
-}
-
-.input-box input{
-    width:100%;
-    padding:12px;
-    border:1px solid #ccc;
-    border-radius:8px;
-}
-
-.password-wrapper{
-    position:relative;
-}
-
-.password-wrapper span{
-    position:absolute;
-    right:15px;
-    top:50%;
-    transform:translateY(-50%);
-    cursor:pointer;
-}
-
-.btn{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:8px;
-    background:#4f46e5;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-}
-
-.btn:hover{
-    background:#3730a3;
-}
-
-.info{
-    margin-top:15px;
-    text-align:center;
-    color:#666;
-}
-
-@media(max-width:768px){
-
-    .container{
-        grid-template-columns:1fr;
-    }
-
-    .left{
-        padding:30px 20px;
-    }
-
-    .right{
-        padding:25px;
-    }
-
-    .left h1{
-        font-size:1.8rem;
-    }
-}
-</style>
+        .social-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+    </style>
 </head>
-<body>
+<body class="font-sans text-gray-800 antialiased overflow-x-hidden bg-gray-50">
 
-<div class="container">
+    <!-- Navigation -->
+   
 
-    <div class="left">
-        <h1>Welcome Back</h1>
-        <p>
-            Login as User or Admin.
-            Fully Responsive Design for Mobile,
-            Tablet and Desktop.
-        </p>
-    </div>
-
-    <div class="right">
-
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('user')">
-                User Login
-            </button>
-
-            <button class="tab-btn" onclick="showTab('admin')">
-                Admin Login
-            </button>
+    <!-- Auth Section -->
+    <section class="min-h-screen bg-gradient-to-br from-brand-teal via-brand-darkTeal to-brand-teal relative overflow-hidden flex items-center justify-center pt-20 pb-10">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-brand-yellow/20 rounded-full blur-3xl animate-float"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-float-delayed"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-white/5 rounded-full"></div>
         </div>
 
-        <!-- USER LOGIN -->
-
-        <div class="form active" id="userForm">
-
-            <div class="input-box">
-                <label>Email</label>
-                <input type="email" id="userEmail" placeholder="Enter Email">
+        <div class="max-w-md w-full mx-4 relative z-10">
+            <!-- Logo Card -->
+            <div class="text-center mb-8">
+                <!-- <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-2xl mb-4 animate-float">
+                     <i class="fa-solid fa-arrow-up-right-dots text-4xl text-brand-teal"></i> 
+                </div> -->
+                <h1 class="text-3xl font-bold text-white mb-2">Welcome to Stackly</h1>
+                <p class="text-white/70">Connect, communicate, and collaborate</p>
             </div>
 
-            <div class="input-box">
-                <label>Password</label>
+            <!-- Auth Card -->
+            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+                <!-- Tabs -->
+                <div class="flex border-b">
+                    <button onclick="showForm('login')" id="tab-login" class="flex-1 py-4 text-center font-semibold transition-colors border-b-2 border-brand-teal text-brand-teal">
+                        Login
+                    </button>
+                  <button type="button"
+        onclick="showForm('signup')"
+        id="tab-signup"
+        class="flex-1 py-4 text-center font-semibold text-gray-400 hover:text-gray-600 transition-colors border-b-2 border-transparent">
+    Sign Up
+</button>
+                </div>
 
-                <div class="password-wrapper">
-                    <input type="password" id="userPassword" placeholder="Enter Password">
-                    <span onclick="togglePassword('userPassword')">👁</span>
+                <div class="p-8">
+                    <!-- Login Form -->
+                    <div id="form-login" class="form-section active">
+                        <form onsubmit="handleLogin(event)">
+                            <div class="space-y-5">
+                                <div class="input-group">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                    <div class="relative">
+                                        <i class="fa-regular fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                        <input type="email" required class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-teal" placeholder="Enter your email">
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                                    <div class="relative">
+                                        <i class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                        <input type="password" required class="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-teal" placeholder="Enter your password" id="login-password">
+                                        <button type="button" onclick="togglePassword('login-password', this)" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="w-4 h-4 text-brand-teal border-gray-300 rounded focus:ring-brand-teal">
+                                        <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                                    </label>
+                                    <button type="button" onclick="showForm('forgot')" class="text-sm text-brand-teal hover:text-brand-darkTeal font-medium">Forgot password?</button>
+                                </div>
+
+                                <button type="submit" class="w-full bg-brand-teal text-white py-3 rounded-xl font-semibold hover:bg-brand-darkTeal transition-all hover:shadow-lg hover:shadow-brand-teal/30 flex items-center justify-center gap-2">
+                                    Sign In <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="mt-6">
+                            <div class="relative">
+                                <div class="absolute inset-0 flex items-center">
+                                    <div class="w-full border-t border-gray-200"></div>
+                                </div>
+                                <div class="relative flex justify-center text-sm">
+                                    <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-3 mt-6">
+                            <a href="404.html">  <button class="social-btn flex items-center justify-center py-2.5 border border-gray-200 rounded-xl hover:border-gray-300 hover:bg-gray-50">
+                                    <i class="fa-brands fa-google text-red-500 text-lg"></i>
+                                </button></a>  
+                            <a href="404.html">  <button class="social-btn flex items-center justify-center py-2.5 border border-gray-200 rounded-xl hover:border-gray-300 hover:bg-gray-50">
+                                    <i class="fa-brands fa-apple text-gray-900 text-lg"></i>
+                                </button>
+                              <a href="404.html">  <button class="social-btn flex items-center justify-center py-2.5 border border-gray-200 rounded-xl hover:border-gray-300 hover:bg-gray-50">
+                                    <i class="fa-brands fa-microsoft text-blue-500 text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sign Up Form -->
+                    <div id="form-signup" class="form-section">
+                        <form onsubmit="handleSignup(event)">
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="input-group">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                        <input type="text" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-teal" placeholder="John">
+                                    </div>
+                                    <div class="input-group">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                        <input type="text" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-teal" placeholder="Doe">
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                    <div class="relative">
+                                        <i class="fa-regular fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                        <input type="email" required class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-teal" placeholder="john@example.com">
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                                    <div class="relative">
+                                        <i class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                        <input type="password" required class="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-teal" placeholder="Create password" id="signup-password">
+                                        <button type="button" onclick="togglePassword('signup-password', this)" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                                    <div class="relative">
+                                        <i class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                        <input type="password" required class="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-teal" placeholder="Confirm password" id="signup-confirm">
+                                        <button type="button" onclick="togglePassword('signup-confirm', this)" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <label class="flex items-start">
+                                    <input type="checkbox" required class="w-4 h-4 mt-1 text-brand-teal border-gray-300 rounded focus:ring-brand-teal">
+                                    <span class="ml-2 text-sm text-gray-600">I agree to the <a href="#" class="text-brand-teal hover:underline">Terms of Service</a> and <a href="#" class="text-brand-teal hover:underline">Privacy Policy</a></span>
+                                </label>
+
+                                <button type="submit" class="w-full bg-brand-yellow text-white py-3 rounded-xl font-semibold hover:bg-yellow-500 transition-all hover:shadow-lg hover:shadow-brand-yellow/30 flex items-center justify-center gap-2">
+                                    Create Account <i class="fa-solid fa-user-plus"></i>
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="mt-6">
+                            <div class="relative">
+                                <div class="absolute inset-0 flex items-center">
+                                    <div class="w-full border-t border-gray-200"></div>
+                                </div>
+                                <div class="relative flex justify-center text-sm">
+                                    <span class="px-2 bg-white text-gray-500">Or sign up with</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-3 mt-6">
+                                <button class="social-btn flex items-center justify-center py-2.5 border border-gray-200 rounded-xl hover:border-gray-300 hover:bg-gray-50">
+                                    <i class="fa-brands fa-google text-red-500 text-lg"></i>
+                                </button>
+                                <button class="social-btn flex items-center justify-center py-2.5 border border-gray-200 rounded-xl hover:border-gray-300 hover:bg-gray-50">
+                                    <i class="fa-brands fa-apple text-gray-900 text-lg"></i>
+                                </button>
+                                <button class="social-btn flex items-center justify-center py-2.5 border border-gray-200 rounded-xl hover:border-gray-300 hover:bg-gray-50">
+                                    <i class="fa-brands fa-microsoft text-blue-500 text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Forgot Password Form -->
+                    <div id="form-forgot" class="form-section">
+                        <div class="text-center mb-6">
+                            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-brand-teal/10 flex items-center justify-center text-brand-teal">
+                                <i class="fa-solid fa-key text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Forgot Password?</h3>
+                            <p class="text-gray-600 text-sm">Enter your email address and we'll send you a link to reset your password.</p>
+                        </div>
+
+                        <form onsubmit="handleForgot(event)">
+                            <div class="space-y-5">
+                                <div class="input-group">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                    <div class="relative">
+                                        <i class="fa-regular fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                        <input type="email" required class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-teal" placeholder="Enter your email">
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="w-full bg-brand-teal text-white py-3 rounded-xl font-semibold hover:bg-brand-darkTeal transition-all hover:shadow-lg hover:shadow-brand-teal/30 flex items-center justify-center gap-2">
+                                    Send Reset Link <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+
+                                <button type="button" onclick="showForm('login')" class="w-full py-3 text-gray-600 hover:text-brand-teal font-medium transition-colors flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-arrow-left"></i> Back to Sign In
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 
-            <button class="btn" onclick="userLogin()">
-                Login as User
-            </button>
-
-            <div class="info">
-                Demo Password: user123
-            </div>
-
-        </div>
-
-        <!-- ADMIN LOGIN -->
-
-        <div class="form" id="adminForm">
-
-            <div class="input-box">
-                <label>Admin Email</label>
-                <input type="email" id="adminEmail" placeholder="Enter Admin Email">
-            </div>
-
-            <div class="input-box">
-                <label>Admin Password</label>
-
-                <div class="password-wrapper">
-                    <input type="password" id="adminPassword" placeholder="Enter Password">
-                    <span onclick="togglePassword('adminPassword')">👁</span>
+            <!-- Footer Links -->
+            <div class="text-center mt-8 text-white/60 text-sm">
+                <p>&copy; 2023 PEOPLED. All rights reserved.</p>
+                <div class="mt-2 space-x-4">
+                    <a href="404.html" class="hover:text-white transition-colors">Privacy</a>
+                    <a href="404.html" class="hover:text-white transition-colors">Terms</a>
+                    <a href="404.html" class="hover:text-white transition-colors">Help</a>
                 </div>
             </div>
-
-            <button class="btn" onclick="adminLogin()">
-                Login as Admin
-            </button>
-
-            <div class="info">
-                Special Password: ADMIN@2026
-            </div>
-
         </div>
+    </section>
 
+    <!-- Full Footer -->
+   
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <div class="bg-white rounded-xl shadow-2xl p-4 flex items-center gap-3 border-l-4 border-brand-teal">
+            <div class="w-10 h-10 rounded-full bg-brand-teal/10 flex items-center justify-center text-brand-teal">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-900" id="toast-title">Success!</h4>
+                <p class="text-sm text-gray-600" id="toast-message">Operation completed successfully.</p>
+            </div>
+        </div>
     </div>
 
-</div>
+    <script>
+        // Mobile Menu Logic
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const closeBtn = document.getElementById('close-menu-btn');
+        const navbar = document.getElementById('navbar');
 
-<script>
+        function toggleMenu() {
+            menu.classList.toggle('translate-x-full');
+        }
 
-function showTab(type){
+        btn.addEventListener('click', toggleMenu);
+        closeBtn.addEventListener('click', toggleMenu);
 
-    document.querySelectorAll('.form').forEach(form=>{
-        form.classList.remove('active');
-    });
+        // Mobile Dropdown Functionality
+        document.querySelectorAll('.mobile-dropdown-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const dropdown = this.parentElement;
+                const content = dropdown.querySelector('.mobile-dropdown-content');
+                const arrow = this.querySelector('.mobile-dropdown-arrow');
+                
+                content.classList.toggle('active');
+                arrow.classList.toggle('active');
+                
+                document.querySelectorAll('.mobile-dropdown').forEach(otherDropdown => {
+                    if (otherDropdown !== dropdown) {
+                        const otherContent = otherDropdown.querySelector('.mobile-dropdown-content');
+                        const otherArrow = otherDropdown.querySelector('.mobile-dropdown-arrow');
+                        otherContent.classList.remove('active');
+                        otherArrow.classList.remove('active');
+                    }
+                });
+            });
+        });
 
-    document.querySelectorAll('.tab-btn').forEach(btn=>{
-        btn.classList.remove('active');
-    });
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.mobile-dropdown')) {
+                document.querySelectorAll('.mobile-dropdown-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.querySelectorAll('.mobile-dropdown-arrow').forEach(arrow => {
+                    arrow.classList.remove('active');
+                });
+            }
+        });
 
-    if(type === 'user'){
-        document.getElementById('userForm').classList.add('active');
-        document.querySelectorAll('.tab-btn')[0].classList.add('active');
-    }
-    else{
-        document.getElementById('adminForm').classList.add('active');
-        document.querySelectorAll('.tab-btn')[1].classList.add('active');
-    }
-}
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
 
-function togglePassword(id){
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+                navbar.classList.replace('bg-brand-teal', 'bg-brand-darkTeal');
+            } else {
+                navbar.classList.remove('shadow-lg');
+                navbar.classList.replace('bg-brand-darkTeal', 'bg-brand-teal');
+            }
+        });
 
-    let input = document.getElementById(id);
+        // Form Switching Logic
+        function showForm(formType) {
+            // Hide all forms
+            document.querySelectorAll('.form-section').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // Show selected form
+            document.getElementById('form-' + formType).classList.add('active');
+            
+            // Update tabs
+            const loginTab = document.getElementById('tab-login');
+            const signupTab = document.getElementById('tab-signup');
+            
+            if (formType === 'login') {
+                loginTab.classList.add('border-brand-teal', 'text-brand-teal');
+                loginTab.classList.remove('border-transparent', 'text-gray-400');
+                signupTab.classList.remove('border-brand-teal', 'text-brand-teal');
+                signupTab.classList.add('border-transparent', 'text-gray-400');
+            } else if (formType === 'signup') {
+                signupTab.classList.add('border-brand-teal', 'text-brand-teal');
+                signupTab.classList.remove('border-transparent', 'text-gray-400');
+                loginTab.classList.remove('border-brand-teal', 'text-brand-teal');
+                loginTab.classList.add('border-transparent', 'text-gray-400');
+            }
+        }
 
-    if(input.type === "password"){
-        input.type = "text";
-    }
-    else{
-        input.type = "password";
-    }
-}
+        // Password Toggle
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
 
-/* USER LOGIN */
+        // Toast Notification
+        function showToast(title, message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').textContent = title;
+            document.getElementById('toast-message').textContent = message;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
 
-function userLogin(){
+        // Form Handlers
+        function handleLogin(e) {
+            e.preventDefault();
+            showToast('Welcome Back!', 'Successfully signed in to your account.');
+            setTimeout(() => {
+                window.location.href = '404.html';
+            }, 1500);
+        }
 
-    let email = document.getElementById("userEmail").value;
-    let password = document.getElementById("userPassword").value;
+      function handleSignup(e) {
+    e.preventDefault();
 
-    if(email === "" || password === ""){
-        alert("⚠ Please fill all fields");
+    const password = document.getElementById("signup-password").value;
+    const confirm = document.getElementById("signup-confirm").value;
+
+    if(password !== confirm){
+        alert("Passwords do not match!");
         return;
     }
 
-    if(password === "user123"){
-        alert("✅ User Login Successful");
-
-        // Redirect
-         window.location.href="admin.html";
-    }
-    else{
-        alert("❌ Invalid User Password");
-    }
+    window.location.href = "404.html";
 }
 
-/* ADMIN LOGIN */
+        function handleForgot(e) {
+            e.preventDefault();
+            showToast('Email Sent!', 'Check your inbox for password reset instructions.');
+        }
 
-function adminLogin(){
+        // Check URL params for form type
+        const urlParams = new URLSearchParams(window.location.search);
+        const formType = urlParams.get('form');
+        if (formType === 'signup') {
+            showForm('signup');
+        } else if (formType === 'forgot') {
+            showForm('forgot');
+        }
 
-    let email = document.getElementById("adminEmail").value;
-    let password = document.getElementById("adminPassword").value;
 
-    if(email === "" || password === ""){
-        alert("⚠ Please fill all fields");
-        return;
-    }
+function handleSignup(e) {
+    e.preventDefault();
 
-    if(password === "ADMIN@2026"){
-        alert("🎉 Admin Login Successful");
-
-        // Redirec
-         window.location.href="student.html";
-    }
-    else{
-        alert("🚫 Unauthorized Access! Wrong Admin Password");
-    }
+    // Create Account button click செய்தால் மட்டும்
+    window.location.href = "404.html";
 }
 
-</script>
 
+
+
+
+
+
+
+    </script>
 </body>
 </html>
