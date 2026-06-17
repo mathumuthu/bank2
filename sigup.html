@@ -526,6 +526,13 @@
         .image-content {
             animation: fadeInUp 1s ease-out 0.2s both;
         }
+        .back{
+position:absolute;
+top:30px;
+left:40px;
+color:white;
+text-decoration:none;
+}
     </style>
 </head>
 <body>
@@ -573,13 +580,16 @@
                 </div>
             </div>
         </div> -->
+<!-- <a href="index.html" class="back">← Back to Home</a> -->
 
         <div class="form-section">
             <div class="form-wrapper">
                 <div class="form-header">
                     <h1>Create Account</h1>
-                    <p>Already have an account? <a href="sig.html">Sign in</a></p>
+                    <p>Already have an account? <a href="login.html">Login</a></p>
+                    
                 </div>
+                
 
                 <form id="signupForm">
                     <div class="name-row">
@@ -621,10 +631,10 @@
                             <i class="fas fa-users"></i>
                             <select id="userType" required>
                                 <option value="" disabled selected>Select user type</option>
-                                <option value="buyer">Home Buyer</option>
-                                <option value="seller">Property Seller</option>
-                                <option value="investor">Investor</option>
-                                <option value="agent">Real Estate Agent</option>
+                                <option value="buyer">Admin</option>
+                                <option value="seller">User</option>
+                                <!-- <option value="investor">Investor</option>
+                                <option value="agent">Real Estate Agent</option> -->
                             </select>
                             <i class="fas fa-chevron-down select-arrow"></i>
                         </div>
@@ -714,7 +724,7 @@
                 return;
             }
 
-            alert('Account created successfully! Welcome to Stackly Real Estate.');
+            alert('Account created successfully! Welcome to Stackly .');
         });
     </script>
 </body>
